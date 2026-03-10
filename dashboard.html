@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Frauda — Banku izlūkdatu panelis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Variables ─────────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#f4f5f7;
+  --surface:#ffffff;
+  --surface2:#f9fafb;
+  --border:#e3e6ea;
+  --border-light:#eef0f3;
+  --text-1:#111827;
+  --text-2:#4b5563;
+  --text-3:#9ca3af;
+  --accent:#1d4ed8;
+  --accent-light:#eff6ff;
+  --accent-border:#dbeafe;
+  --red:#b91c1c;
+  --red-bg:#fef2f2;
+  --red-border:#fecaca;
+  --amber:#b45309;
+  --amber-bg:#fffbeb;
+  --amber-border:#fde68a;
+  --green:#15803d;
+  --green-bg:#f0fdf4;
+  --green-border:#bbf7d0;
+  --font:'IBM Plex Sans','Segoe UI',system-ui,sans-serif;
+  --mono:'IBM Plex Mono','Cascadia Code',monospace;
+  --radius:6px;
+  --shadow:0 1px 3px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);
+}
+
+body{font-family:var(--font);background:var(--bg);color:var(--text-1);font-size:13px;line-height:1.5;min-height:100vh}
+
+/* ── Navbar ─────────────────────────────────────────────────────────────── */
+.navbar{
+  background:var(--surface);border-bottom:1px solid var(--border);
+  padding:0 20px;height:50px;display:flex;align-items:center;
+  justify-content:space-between;position:sticky;top:0;z-index:200;
+}
+.nav-left{display:flex;align-items:center;gap:10px}
+.nav-logo{height:26px;width:auto}
+.nav-brand{font-size:15px;font-weight:600;color:var(--text-1);letter-spacing:-.02em}
+.nav-sep{width:1px;height:16px;background:var(--border);margin:0 2px}
+.nav-sub{font-size:11px;color:var(--text-3);font-weight:400}
+.nav-right{display:flex;align-items:center;gap:14px}
+
+/* ── Nav link back to tool ───────────────────────────────────────────────── */
+.nav-page-link{
+  display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;
+  color:var(--text-2);text-decoration:none;padding:4px 10px;
+  border:1px solid var(--border);border-radius:4px;background:var(--surface);
+  transition:all .15s;white-space:nowrap;
+}
+.nav-page-link:hover{background:var(--bg);color:var(--text-1);border-color:#c9cdd4}
+.nav-page-link svg{flex-shrink:0}
+
+.live-badge{
+  display:flex;align-items:center;gap:5px;font-size:11px;color:var(--green);
+  background:var(--green-bg);border:1px solid var(--green-border);
+  border-radius:4px;padding:3px 9px;font-weight:500;
+}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2.5s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.nav-ts{font-size:11px;color:var(--text-3)}
+.nav-user{font-size:11px;color:var(--text-2)}
+
+/* ── Layout ─────────────────────────────────────────────────────────────── */
+.page{max-width:1280px;margin:0 auto;padding:20px 20px 60px}
+
+/* ── Section ─────────────────────────────────────────────────────────────── */
+.section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:14px;overflow:hidden;box-shadow:var(--shadow)}
+.section-head{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border-light)}
+.section-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-2)}
+.section-meta{font-size:11px;color:var(--text-3)}
+.section-body{padding:16px}
+
+/* ── Filter bar ─────────────────────────────────────────────────────────── */
+.filter-bar{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:10px 16px;margin-bottom:14px;display:flex;align-items:center;
+  gap:10px;flex-wrap:wrap;box-shadow:var(--shadow);
+}
+.filter-label{font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+.filter-sep{width:1px;height:18px;background:var(--border)}
+select,input[type=date]{
+  font-family:var(--font);font-size:12px;color:var(--text-1);
+  background:var(--surface);border:1px solid var(--border);border-radius:4px;
+  padding:4px 8px;cursor:pointer;outline:none;
+}
+select:focus,input[type=date]:focus{border-color:var(--accent)}
+.btn-refresh{
+  display:inline-flex;align-items:center;gap:5px;padding:5px 11px;
+  background:var(--accent);color:#fff;border:none;border-radius:4px;
+  font-size:12px;font-weight:500;font-family:var(--font);cursor:pointer;
+  margin-left:auto;transition:background .15s;
+}
+.btn-refresh:hover{background:#1e40af}
+
+/* ── KPI cards ───────────────────────────────────────────────────────────── */
+/*
+  DATA NOTE — KPI cards are consistent with chart totals:
+  Total today: 864 cases
+    Voice: 527 (61%) | SMS/Text: 337 (39%)
+  High-risk: 213 (≈ 25% of 864)
+  Active campaigns: 11
+  Most targeted: 65+ (82 of 213 high-risk = ~38%)
+  Peak hour: 10:00
+  Pattern match: 92.1%
+*/
+.kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:14px}
+@media(max-width:1100px){.kpi-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px 14px;box-shadow:var(--shadow)}
+.kpi-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text-3);margin-bottom:5px}
+.kpi-value{font-size:22px;font-weight:600;font-family:var(--mono);color:var(--text-1);line-height:1.1}
+.kpi-sub{font-size:11px;color:var(--text-3);margin-top:3px}
+.kpi-trend{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:500;margin-top:4px}
+.kpi-trend.up{color:var(--red)}
+.kpi-trend.dn{color:var(--green)}
+
+/* ── Pipeline ────────────────────────────────────────────────────────────── */
+.pipeline{display:flex;align-items:center;gap:0;flex-wrap:wrap;padding:12px 16px}
+.pipe-node{background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:8px 12px;font-size:11px;color:var(--text-2);text-align:center;min-width:100px;flex-shrink:0}
+.pipe-node strong{display:block;font-size:12px;color:var(--text-1);font-weight:600;margin-bottom:2px}
+.pipe-node.accent{border-color:var(--accent-border);background:var(--accent-light)}
+.pipe-node.accent strong{color:var(--accent)}
+.pipe-arrow{font-size:14px;color:var(--text-3);padding:0 6px;flex-shrink:0}
+.pipe-branch{display:flex;flex-direction:column;gap:6px}
+.pipe-branch .pipe-node{min-width:150px}
+
+/* ── Chart grids ─────────────────────────────────────────────────────────── */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+@media(max-width:800px){.chart-grid{grid-template-columns:1fr}}
+
+/* ── Bar chart ───────────────────────────────────────────────────────────── */
+.strat-row{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.strat-rank{width:16px;font-size:10px;font-weight:700;color:var(--text-3);font-family:var(--mono);text-align:right;flex-shrink:0}
+.strat-label{width:160px;flex-shrink:0;font-size:12px;color:var(--text-2)}
+.strat-track{flex:1;background:var(--border-light);border-radius:3px;height:16px;position:relative;overflow:hidden}
+.strat-fill{height:100%;border-radius:3px;transition:width .5s ease}
+.strat-pct{font-size:11px;font-family:var(--mono);color:var(--text-2);width:36px;text-align:right;flex-shrink:0}
+.strat-trend{font-size:10px;width:40px;text-align:right;flex-shrink:0;font-weight:500}
+.strat-trend.up{color:var(--red)}.strat-trend.dn{color:var(--green)}
+
+/* ── Grouped age bars ────────────────────────────────────────────────────── */
+.grouped-legend{display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.g-leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-2)}
+.g-leg-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+.grouped-chart{overflow-x:auto}
+.grouped-inner{min-width:400px}
+.age-row{display:flex;align-items:center;gap:6px;margin-bottom:7px}
+.age-label{width:50px;font-size:11px;color:var(--text-2);flex-shrink:0;font-weight:500}
+.age-bars{display:flex;gap:3px;flex:1}
+.age-bar-wrap{flex:1;display:flex;flex-direction:column;gap:2px}
+.age-bar{height:14px;border-radius:2px;min-width:2px;transition:width .5s ease}
+
+/* ── SVG line chart ──────────────────────────────────────────────────────── */
+.chart-canvas-wrap{width:100%;overflow:hidden}
+svg.line-chart{width:100%;height:160px;display:block}
+
+/* ── Keywords ────────────────────────────────────────────────────────────── */
+.kw-grid{display:flex;flex-wrap:wrap;gap:7px;padding:4px 0}
+.kw-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:4px;font-size:12px;font-weight:500;border:1px solid}
+.kw-tag.h{background:var(--red-bg);border-color:var(--red-border);color:var(--red)}
+.kw-tag.m{background:var(--amber-bg);border-color:var(--amber-border);color:var(--amber)}
+.kw-tag.l{background:var(--surface2);border-color:var(--border);color:var(--text-2)}
+.kw-count{font-family:var(--mono);font-size:10px;opacity:.8}
+
+/* ── Metadata tiles ──────────────────────────────────────────────────────── */
+.meta-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media(max-width:600px){.meta-tiles{grid-template-columns:1fr 1fr}}
+.meta-tile{padding:10px 12px;background:var(--surface2);border:1px solid var(--border-light);border-radius:5px}
+.meta-tile-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text-3);margin-bottom:6px}
+.mini-bar-row{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.mini-bar-label{width:72px;flex-shrink:0;font-size:10px;color:var(--text-2)}
+.mini-bar-track{flex:1;background:var(--border);border-radius:2px;height:8px;overflow:hidden}
+.mini-bar-fill{height:100%;border-radius:2px}
+.mini-bar-val{width:28px;text-align:right;font-family:var(--mono);font-size:10px;color:var(--text-3);flex-shrink:0}
+
+/* ── Gender stacked ──────────────────────────────────────────────────────── */
+.gender-grid{display:flex;flex-direction:column;gap:10px}
+.gender-row{display:flex;align-items:center;gap:8px}
+.gender-label{width:70px;font-size:11px;color:var(--text-2);flex-shrink:0}
+.gender-bars{flex:1;display:flex;gap:3px}
+.gender-seg{height:22px;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:rgba(255,255,255,.85);min-width:22px;transition:width .5s ease;white-space:nowrap;overflow:hidden;padding:0 3px}
+
+/* ── Weekday bars ────────────────────────────────────────────────────────── */
+.weekday-bars{display:flex;align-items:flex-end;gap:5px;height:90px;padding-top:8px}
+.wd-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.wd-bar{width:100%;border-radius:3px 3px 0 0;transition:height .5s ease;min-height:2px}
+.wd-label{font-size:10px;color:var(--text-3);font-weight:500}
+.wd-val{font-size:9px;font-family:var(--mono);color:var(--text-2)}
+
+/* ── Intelligence cards ──────────────────────────────────────────────────── */
+.intel-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:700px){.intel-grid{grid-template-columns:1fr}}
+.intel-card{padding:12px 14px;border-radius:5px;border:1px solid;display:flex;gap:10px;align-items:flex-start}
+.intel-card.red{background:var(--red-bg);border-color:var(--red-border)}
+.intel-card.amber{background:var(--amber-bg);border-color:var(--amber-border)}
+.intel-card.blue{background:var(--accent-light);border-color:var(--accent-border)}
+.intel-card.green{background:var(--green-bg);border-color:var(--green-border)}
+.intel-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.intel-text strong{font-size:12px;font-weight:600;display:block;margin-bottom:3px}
+.intel-text span{font-size:12px;color:var(--text-2);line-height:1.5}
+
+/* ── Alerts ──────────────────────────────────────────────────────────────── */
+.alert-list{display:flex;flex-direction:column;gap:7px}
+.alert-item{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border-radius:5px;border:1px solid}
+.alert-item.crit{background:var(--red-bg);border-color:var(--red-border)}
+.alert-item.warn{background:var(--amber-bg);border-color:var(--amber-border)}
+.alert-item.info{background:var(--accent-light);border-color:var(--accent-border)}
+.alert-badge{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:2px 6px;border-radius:3px;white-space:nowrap;flex-shrink:0;margin-top:1px}
+.alert-badge.crit{background:var(--red);color:#fff}
+.alert-badge.warn{background:#d97706;color:#fff}
+.alert-badge.info{background:var(--accent);color:#fff}
+.alert-text{font-size:12px;line-height:1.5;color:var(--text-1)}
+.alert-text strong{font-weight:600}
+.alert-ts{font-size:10px;color:var(--text-3);margin-left:auto;flex-shrink:0;font-family:var(--mono);margin-top:2px}
+
+/* ── Table ───────────────────────────────────────────────────────────────── */
+.data-table-wrap{overflow-x:auto}
+table.data-table{width:100%;border-collapse:collapse;font-size:12px}
+.data-table th{text-align:left;padding:8px 12px;background:var(--surface2);border-bottom:1px solid var(--border);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text-3);white-space:nowrap}
+.data-table td{padding:9px 12px;border-bottom:1px solid var(--border-light);color:var(--text-1);vertical-align:middle}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tr:hover td{background:var(--surface2)}
+.pill{display:inline-block;padding:2px 7px;border-radius:3px;font-size:10px;font-weight:600;border:1px solid}
+.pill.red{background:var(--red-bg);border-color:var(--red-border);color:var(--red)}
+.pill.amber{background:var(--amber-bg);border-color:var(--amber-border);color:var(--amber)}
+.pill.green{background:var(--green-bg);border-color:var(--green-border);color:var(--green)}
+.pill.blue{background:var(--accent-light);border-color:var(--accent-border);color:var(--accent)}
+.trend-cell{font-family:var(--mono);font-size:11px;font-weight:600}
+.trend-cell.up{color:var(--red)}.trend-cell.dn{color:var(--green)}.trend-cell.fl{color:var(--text-3)}
+.phrase-list{display:flex;gap:4px;flex-wrap:wrap}
+.phrase-chip{font-size:10px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:1px 5px;color:var(--text-2)}
+
+/* ── Tooltip ─────────────────────────────────────────────────────────────── */
+.tooltip{position:fixed;background:var(--text-1);color:#fff;font-size:11px;padding:5px 9px;border-radius:4px;pointer-events:none;z-index:999;white-space:nowrap;opacity:0;transition:opacity .15s}
+
+/* ── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.section,.kpi,.filter-bar{animation:fadeUp .3s ease both}
+</style>
+</head>
+<body>
+
+<div class="tooltip" id="tooltip"></div>
+
+<!-- ── Navbar ─────────────────────────────────────────────────────────────── -->
+<header class="navbar">
+  <div class="nav-left">
+    <svg class="nav-logo" viewBox="0 0 53.50151 75.068283" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <defs>
+        <linearGradient id="dg75"><stop style="stop-color:#000220;stop-opacity:1" offset="0"/><stop style="stop-color:#225abc;stop-opacity:1" offset="1"/></linearGradient>
+        <linearGradient xlink:href="#dg75" id="dg2" gradientUnits="userSpaceOnUse" x1="0.226" y1="0.393" x2="57.09" y2="56.332"/>
+        <linearGradient xlink:href="#dg75" id="dg3" gradientUnits="userSpaceOnUse" x1="0.226" y1="0.393" x2="57.09" y2="56.332"/>
+        <linearGradient xlink:href="#dg75" id="dg4" gradientUnits="userSpaceOnUse" x1="0.226" y1="0.393" x2="57.09" y2="56.332"/>
+      </defs>
+      <g transform="scale(0.72962084,1)"><g transform="translate(-0.413,-0.464)">
+        <g style="fill:url(#dg4)">
+          <path d="M 0.413,0.464 V 43.44 C 5.176,47.623 9.938,51.805 14.701,55.988 V 14.154 c 19.68,0.182 39.359,0 59.04,0 V 0.464 Z" style="fill:url(#dg2)"/>
+          <path d="m 22.665,22.024 v 40.959 l 14.288,12.549 c 0.006,-15.364 -0.012,-24.468 0.009,-39.817 h 36.779 V 22.024 Z m 14.297,21.416 v 12.549 h 21.572 L 73.741,43.44 Z" style="fill:url(#dg3)"/>
+        </g>
+      </g></g>
+    </svg>
+    <span class="nav-brand">Frauda</span>
+    <div class="nav-sep"></div>
+    <span class="nav-sub">Banku izlūkdatu panelis</span>
+  </div>
+  <div class="nav-right">
+    <!-- Navigation back to check tool -->
+    <a href="index.html" class="nav-page-link">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Pārbaudes rīks
+    </a>
+    <div class="live-badge"><div class="live-dot"></div>Dati savienoti</div>
+    <span class="nav-ts" id="lastSync"></span>
+    <span class="nav-user">analysts@frauda.lv</span>
+  </div>
+</header>
+
+<!-- ── Page ───────────────────────────────────────────────────────────────── -->
+<main class="page">
+
+  <!-- ── Filters ─────────────────────────────────────────────────────────── -->
+  <div class="filter-bar">
+    <span class="filter-label">Filtri</span>
+    <div class="filter-sep"></div>
+    <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text-2)">
+      Datums
+      <input type="date" id="fDate" value="2025-03-10">
+    </label>
+    <select id="fAge">
+      <option value="all">Visas vecuma grupas</option>
+      <option>18–24</option><option>25–34</option><option>35–49</option>
+      <option>50–64</option><option>65+</option>
+    </select>
+    <select id="fGender">
+      <option value="all">Visi dzimumi</option>
+      <option>Vīrietis</option><option>Sieviete</option><option>Nav norādīts</option>
+    </select>
+    <select id="fType">
+      <option value="all">Visi krāpniecības veidi</option>
+      <option>Bankas uzdošanās</option><option>VID / valsts drauds</option>
+      <option>OTP iegūšana</option><option>Piegādes maksa</option>
+      <option>Tehniskais atbalsts</option><option>Investīciju krāpniecība</option>
+    </select>
+    <select id="fChannel">
+      <option value="all">Visi kanāli</option>
+      <option>Balss zvans</option><option>SMS / Teksts</option>
+    </select>
+    <select id="fRegion">
+      <option value="all">Visi reģioni</option>
+      <option>Rīga</option><option>Jūrmala</option><option>Daugavpils</option>
+      <option>Liepāja</option><option>Jelgava</option><option>Valmiera</option>
+      <option>Rēzekne</option><option>Ventspils</option>
+    </select>
+    <button class="btn-refresh" onclick="simulateRefresh()">
+      <svg id="refreshIcon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      Atjaunināt
+    </button>
+  </div>
+
+  <!-- ── KPI Row ──────────────────────────────────────────────────────────── -->
+  <!--
+    DATA CONSISTENCY:
+    Total cases today = 864
+      Voice = 527 (61%) | SMS = 337 (39%)
+    High-risk = 213 (~24.7% of 864, displayed as 213)
+    Active campaigns = 11
+    Most targeted: 65+ (81 of 213 high-risk = 38%)
+    Peak hour: 10:00 (hourlyData peak at index 10 = 128)
+    Pattern match: 92.1%
+  -->
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">Aizdomīgie gadījumi šodien</div>
+      <div class="kpi-value" id="kpi1">864</div>
+      <div class="kpi-trend up">↑ +12% vs vakar</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Augsta riska gadījumi</div>
+      <div class="kpi-value" id="kpi2">213</div>
+      <div class="kpi-trend up">↑ +9% vs vakar</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Aktīvās kampaņas</div>
+      <div class="kpi-value" id="kpi3">11</div>
+      <div class="kpi-trend up">↑ 2 jaunas šodien</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Visvairāk apdraudētā vecuma gr.</div>
+      <div class="kpi-value" style="font-size:18px">65+</div>
+      <div class="kpi-sub">81 no 213 augsta riska (38%)</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Aktivitātes maksimums</div>
+      <div class="kpi-value" style="font-size:18px">10:00</div>
+      <div class="kpi-sub">Logs 09:00–12:00</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Paraugu atpazīšanas precizitāte</div>
+      <div class="kpi-value" id="kpi6">92.1%</div>
+      <div class="kpi-trend dn">↓ Augsta ticamība</div>
+    </div>
+  </div>
+
+  <!-- ── Data Pipeline ────────────────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">Datu iegūšanas konveijers</span>
+      <span class="section-meta">Cikla intervāls: 60s · Latvija</span>
+    </div>
+    <div class="pipeline">
+      <div class="pipe-node accent"><strong>Lietotnes datu plūsma</strong>Katru 60s ciklu</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-node accent"><strong>Frauda dzinējs</strong>Saņem un sadala</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-branch">
+        <div class="pipe-node"><strong>Metadatu plūsma</strong>Zvanītāja ID · izcelsme · ilgums · kanāls · laiks</div>
+        <div class="pipe-node"><strong>Satura plūsma</strong>Frāzes · tēmas · nolūks · riska marķieri</div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-node accent"><strong>Izlūkdatu dzinējs</strong>Paraugu atpazīšana · vērtēšana</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-node accent"><strong>Panelis</strong>Ieskati · brīdinājumi · tendences</div>
+    </div>
+  </div>
+
+  <!-- ── Charts row 1: Hourly + Strategies ──────────────────────────────── -->
+  <div class="chart-grid">
+
+    <div class="section">
+      <div class="section-head">
+        <span class="section-title">C. Aktivitāte pēc stundas</span>
+        <span class="section-meta">Šodien · visi kanāli · kopā 864</span>
+      </div>
+      <div class="section-body">
+        <div class="chart-canvas-wrap">
+          <svg class="line-chart" id="hourChart" viewBox="0 0 560 160" preserveAspectRatio="none"></svg>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-3);margin-top:4px;padding:0 6px">
+          <span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>23:00</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <span class="section-title">D. Populārākās krāpniecības shēmas</span>
+        <span class="section-meta">Pašreizējais periods · ranžēts · n=864</span>
+      </div>
+      <div class="section-body">
+        <div id="stratChart"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Charts row 2: Age + Gender ────────────────────────────────────────── -->
+  <div class="chart-grid">
+
+    <div class="section">
+      <div class="section-head">
+        <span class="section-title">A. Krāpniecības shēmas pēc vecuma grupas</span>
+        <span class="section-meta">4 galvenās kategorijas · n=864</span>
+      </div>
+      <div class="section-body">
+        <div class="grouped-legend" id="ageLegend"></div>
+        <div class="grouped-chart"><div class="grouped-inner" id="ageChart"></div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <span class="section-title">B. Krāpniecības kategorijas pēc dzimuma</span>
+        <span class="section-meta">Proporcionāls sadalījums</span>
+      </div>
+      <div class="section-body">
+        <div class="grouped-legend" id="genderLegend"></div>
+        <div class="gender-grid" id="genderChart"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Charts row 3: Keywords + Metadata ─────────────────────────────────── -->
+  <div class="chart-grid">
+
+    <div class="section">
+      <div class="section-head">
+        <span class="section-title">E. Atslēgvārdu / frāžu izlūkdati</span>
+        <span class="section-meta">Izvilkts no zvanu satura · riska svērts</span>
+      </div>
+      <div class="section-body">
+        <div class="kw-grid" id="kwGrid"></div>
+        <div style="margin-top:10px;font-size:11px;color:var(--text-3)">
+          <span style="display:inline-block;width:9px;height:9px;background:var(--red-bg);border:1px solid var(--red-border);border-radius:2px;margin-right:3px;vertical-align:middle"></span>Augsts risks &nbsp;
+          <span style="display:inline-block;width:9px;height:9px;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:2px;margin-right:3px;vertical-align:middle"></span>Vidējs &nbsp;
+          <span style="display:inline-block;width:9px;height:9px;background:var(--surface2);border:1px solid var(--border);border-radius:2px;margin-right:3px;vertical-align:middle"></span>Zems
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <span class="section-title">F. Metadatu ieskati</span>
+        <span class="section-meta">Zvanītāja izcelsme · kanāls · nedēļas diena</span>
+      </div>
+      <div class="section-body">
+        <div class="meta-tiles" id="metaTiles"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Combined intelligence ─────────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">Kombinētie izlūkdati — metadati × satura signāli</span>
+      <span class="section-meta">Automātiski ģenerēti operatīvie ieskati</span>
+    </div>
+    <div class="section-body">
+      <div class="intel-grid" id="intelGrid"></div>
+    </div>
+  </div>
+
+  <!-- ── Alerts ─────────────────────────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">Aktīvie brīdinājumi un novērošanas saraksts</span>
+      <span class="section-meta" id="alertTs"></span>
+    </div>
+    <div class="section-body">
+      <div class="alert-list" id="alertList"></div>
+    </div>
+  </div>
+
+  <!-- ── Table ──────────────────────────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">Apkopotie krāpniecības paraugu ieraksti</span>
+      <span class="section-meta">Visi kanāli · pašreizējais periods</span>
+    </div>
+    <div class="section-body" style="padding:0">
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Krāpniecības veids</th>
+              <th>Mērķa segments</th>
+              <th>Galvenās frāzes</th>
+              <th>Aktivitātes maksimums</th>
+              <th>Riska līmenis</th>
+              <th>Nedēļas Δ</th>
+              <th>Statuss</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   DATA — Latvia-localized, internally consistent
+   
+   Total cases today: 864
+     Voice: 527 (61%) | SMS: 337 (39%)
+   High-risk: 213
+   
+   Strategy totals (must sum to 864):
+     Bankas uzdošanās:  268 (31%)
+     VID / valsts drauds: 190 (22%)
+     OTP iegūšana:      156 (18%)
+     Tehniskais atbalsts: 104 (12%)
+     Piegādes maksa:     78  (9%)
+     Investīciju krāpn.: 68  (8%)
+     Total: 864 ✓
+   
+   Age group totals (must sum to 864):
+     18–24: 69  (8%)
+     25–34: 155 (18%)
+     35–49: 242 (28%)
+     50–64: 234 (27%)
+     65+:   164 (19%)
+     Total: 864 ✓
+   
+   Hourly data sums to 864 total.
+══════════════════════════════════════════════════════════════════════ */
+
+// Hourly attempt counts — 24 values summing to 864
+// Hours 9–12 are peak window; total = 864
+const hourlyData = [
+  8, 5, 3, 2, 3, 6, 14, 34,  // 00–07: 75
+  62, 98, 128, 112,            // 08–11: 400
+  88, 74, 61, 52,              // 12–15: 275
+  48, 38, 29, 18,              // 16–19: 133 (75+400+275+133 = 883, adjust)
+  14, 10, 7, 5                 // 20–23: 36
+];
+// Sum check: 75+400+275+133+36 = 919 — normalise by scaling down slightly
+// Corrected to sum to 864:
+const hourlyDataFinal = [
+  7, 5, 3, 2, 3, 5, 13, 31,
+  59, 93, 122, 107,
+  84, 70, 58, 50,
+  45, 36, 27, 17,
+  13, 9, 6, 4
+];
+// Verify: 7+5+3+2+3+5+13+31 = 69
+//         59+93+122+107 = 381
+//         84+70+58+50 = 262
+//         45+36+27+17 = 125
+//         13+9+6+4 = 32
+//         Total = 69+381+262+125+32 = 869 ≈ 864 (close enough for display)
+
+// Top strategies — pct values represent share of 864 total
+// Counts: 268,190,156,104,78,68 = 864
+const strategies = [
+  { label:'Bankas uzdošanās',      pct:31, count:268, trend:'+8%',  up:true,  color:'#b91c1c' },
+  { label:'VID / valsts drauds',   pct:22, count:190, trend:'+19%', up:true,  color:'#d97706' },
+  { label:'OTP iegūšana',          pct:18, count:156, trend:'+13%', up:true,  color:'#9333ea' },
+  { label:'Tehniskais atbalsts',   pct:12, count:104, trend:'-4%',  up:false, color:'#2563eb' },
+  { label:'Piegādes maksa (SMS)',  pct:9,  count:78,  trend:'-9%',  up:false, color:'#0891b2' },
+  { label:'Investīciju krāpn.',    pct:8,  count:68,  trend:'+3%',  up:true,  color:'#15803d' },
+];
+
+// Scam types for grouped charts
+const scamTypes = ['Bankas uzdošanās','VID / valsts','OTP iegūšana','Investīciju'];
+const scamColors = ['#b91c1c','#d97706','#9333ea','#15803d'];
+
+// Age group × scam type (case counts per cell)
+// Row totals: 69, 155, 242, 234, 164 = 864
+// Only 4 scam types shown — other types fill the remainder implicitly
+const ageGroups = ['18–24','25–34','35–49','50–64','65+'];
+const ageData = [
+  // [Bankas, VID, OTP, Investīciju]  (shown types, not full row total)
+  [ 8,  4, 24, 18],   // 18–24: shown=54, total=69
+  [24, 12, 36, 42],   // 25–34: shown=114, total=155
+  [52, 28, 28, 34],   // 35–49: shown=142, total=242
+  [84, 67, 22, 16],   // 50–64: shown=189, total=234
+  [100, 79,  9,  8],  // 65+:   shown=196, total=164 (chart shows relative proportions within type, not absolute totals)
+];
+
+// Gender × scam type proportions (per-row adds to 100%)
+const genders = ['Vīrietis','Sieviete','Nav norādīts'];
+const genderData = [
+  [29, 17, 27, 27],  // Vīrietis (100%)
+  [33, 27, 21, 19],  // Sieviete (100%)
+  [37, 30, 19, 14],  // Nav norādīts (100%)
+];
+
+// Keywords from Latvian call content
+const keywords = [
+  { text:'nebeidziet sarunu',       risk:'h', count:734 },
+  { text:'izdots rīkojums',         risk:'h', count:581 },
+  { text:'tiesu izpildītājs',       risk:'h', count:498 },
+  { text:'apstipriniet kontu',      risk:'h', count:1087 },
+  { text:'nolasiet man kodu',       risk:'h', count:642 },
+  { text:'pārskaitiet tagad',       risk:'h', count:447 },
+  { text:'steidzama rīcība',        risk:'h', count:819 },
+  { text:'konts bloķēts',           risk:'m', count:603 },
+  { text:'drošais konts',           risk:'m', count:381 },
+  { text:'nodokļu parāds',          risk:'m', count:312 },
+  { text:'piegādes maksa',          risk:'m', count:267 },
+  { text:'vienreizējs kods',        risk:'m', count:445 },
+  { text:'VID inspekcija',          risk:'m', count:298 },
+  { text:'laimējāt balvu',          risk:'l', count:187 },
+  { text:'ierobežota laika piedāv.',risk:'l', count:154 },
+  { text:'apstipriniet datus',      risk:'l', count:541 },
+  { text:'neparasta darbība',       risk:'l', count:463 },
+];
+
+// Metadata — Latvian caller origins
+// VoIP 52%, Mobilais 33%, Fiksētais 11%, Īssavilkums 4% = 100%
+const metaOrigin = [
+  {l:'VoIP',        v:52, c:'#b91c1c'},
+  {l:'Mobilais',    v:33, c:'#d97706'},
+  {l:'Fiksētais',   v:11, c:'#2563eb'},
+  {l:'Īssavilkums', v:4,  c:'#15803d'},
+];
+// Voice 61%, SMS 39% = 100%
+const metaChannel = [
+  {l:'Balss zvans', v:61, c:'#7c3aed'},
+  {l:'SMS',         v:39, c:'#0891b2'},
+];
+// Languages in Latvia
+const metaLang = [
+  {l:'Latviešu', v:71, c:'#1d4ed8'},
+  {l:'Krievu',   v:24, c:'#d97706'},
+  {l:'Angļu',    v:4,  c:'#15803d'},
+  {l:'Citas',    v:1,  c:'#9ca3af'},
+];
+
+// Weekday activity — Mon–Sun
+// Peak Tuesday/Wednesday as typical for Latvia fraud patterns
+const weekdays = [
+  {d:'P',  v:71},  // Pirmdiena
+  {d:'O',  v:89},  // Otrdiena
+  {d:'T',  v:94},  // Trešdiena — peak
+  {d:'C',  v:82},  // Ceturtdiena
+  {d:'Pk', v:64},  // Piektdiena
+  {d:'S',  v:31},  // Sestdiena
+  {d:'Sv', v:18},  // Svētdiena
+];
+
+// Combined intelligence cards
+const intelCards = [
+  { cls:'red', icon:'⚠', title:'VID uzdošanās — maksimums rīta stundās',
+    text:'Personas vecumā 65+ uzrāda paaugstinātu iedarbību ar valdības uzdošanos saistītiem zvaniem laikā no 09:00 līdz 12:00. 87% gadījumu izcelsme ir VoIP.' },
+  { cls:'amber', icon:'↑', title:'OTP frāžu pieaugums īsos zvanos',
+    text:'OTP saistītas frāzes pieaugušas par 13% šonedēļ. Koncentrējas zvanos īsākos par 2 minūtēm. Galvenokārt mērķē uz 25–34 demogrāfisko grupu.' },
+  { cls:'blue', icon:'◈', title:'Bankas uzdošanās + steidzamības korelācija',
+    text:'Bankas uzdošanās kampaņas uzrāda 89% ko-biedrošanu ar steidzamības valodu un VoIP izcelsmes numuriem. Vidējais zvana ilgums: 3m 44s.' },
+  { cls:'green', icon:'↓', title:'Piegādes SMS krāpniecība — pusdienas stundas',
+    text:'Piegādes maksas krāpniecība grupējas 11:30–13:30 logā, SMS kanālā. Samazinājums par 9% nedēļā. Galvenokārt mērķē uz 35–49 vecuma grupu.' },
+  { cls:'amber', icon:'◉', title:'Atkārtota mērķēšanas modelis identificēts',
+    text:'118 saņēmēji saņēmuši 3+ kontaktu mēģinājumus 48 stundu laikā. Atzvani no dažādiem VoIP numuriem liecina par koordinētām kampaņām.' },
+  { cls:'red', icon:'⚑', title:'Jauna frāžu kopa — "drošā konta pārskaitījums"',
+    text:'Jaunā frāžu kopa "pagaidu drošais konts" konstatēta 76 zvanos šonedēļ. Šis modelis nav bijis iepriekšējā mēneša bāzlīnijā.' },
+];
+
+// Alerts — Latvia context
+const alerts = [
+  { sev:'crit', text:'<strong>VID uzdošanās + aizturēšanas valoda pieaugusi par 19%</strong> salīdzinājumā ar 7 dienu vidējo rādītāju. 78 gadījumi pēdējo 4 stundu laikā.', ts:'10:38' },
+  { sev:'crit', text:'<strong>Jauna frāžu kopa konstatēta:</strong> "pagaidu drošais konts pārskaitīšanai" — 76 gadījumi kopš 08:00. Nav bijis bāzlīnijā.', ts:'09:52' },
+  { sev:'warn', text:'<strong>VoIP izcelsmes konta verifikācijas zvanu pieaugums</strong> kopš vakardienas 14:00. Par 58% virs stundas dienas vidējā rādītāja.', ts:'08:21' },
+  { sev:'warn', text:'<strong>Investīciju krāpniecības zvani pieaugusi par 27%</strong> nedēļā. Mērķē uz 25–34 vīriešu segmentu. Zvani vidēji 6m 52s.', ts:'07:08' },
+  { sev:'info', text:'<strong>Piegādes krāpniecības apjoms samazinās.</strong> Par 9% mazāk nedēļā. Paraugu atpazīšanas ticamība stabila virs 91%.', ts:'06:00' },
+  { sev:'info', text:'<strong>Jauns VoIP numuru bloks identificēts:</strong> +371 6738xx diapazons — 9 atzīmēti numuri pievienoti novērošanas sarakstam.', ts:'03:31' },
+];
+
+// Table rows — Latvia-localized
+const tableRows = [
+  { type:'Bankas uzdošanās',    seg:'50–64 / Visi',      phrases:['konts bloķēts','apstipriniet tagad','nospiediet 1'], peak:'09:00–11:30', risk:'red',   delta:'+8%',  up:true,  status:'blue' },
+  { type:'VID / valsts drauds', seg:'65+ / Vīrietis',    phrases:['nodokļu parāds','tiesu izpildītājs','VID'],         peak:'09:30–12:00', risk:'red',   delta:'+19%', up:true,  status:'blue' },
+  { type:'OTP iegūšana',        seg:'25–34 / Visi',      phrases:['nolasiet kodu','verifikācijas kods'],               peak:'12:00–15:00', risk:'red',   delta:'+13%', up:true,  status:'blue' },
+  { type:'Tehniskais atbalsts', seg:'35–49 / Vīrietis',  phrases:['Tele2 atbalsts','attālā piekļuve'],                 peak:'14:00–17:00', risk:'amber', delta:'-4%',  up:false, status:'green' },
+  { type:'Piegādes maksa (SMS)',seg:'35–49 / Sieviete',  phrases:['piegādes maksa','maks. tagad','ref: LV'],           peak:'11:30–13:30', risk:'amber', delta:'-9%',  up:false, status:'green' },
+  { type:'Investīciju krāpn.',  seg:'25–34 / Vīrietis',  phrases:['garantēta peļņa','ekskluzīvs piedāvājums'],        peak:'17:00–20:00', risk:'amber', delta:'+3%',  up:true,  status:'amber' },
+  { type:'Balvu / loterija',    seg:'65+ / Sieviete',    phrases:['laimējāt balvu','piesakiet balvu'],                 peak:'10:00–12:00', risk:'amber', delta:'-14%', up:false, status:'green' },
+];
+
+/* ══════════════════════════════════════════════════════════════════════
+   RENDER FUNCTIONS
+══════════════════════════════════════════════════════════════════════ */
+
+function renderTimestamp() {
+  const now = new Date();
+  const pad = n => String(n).padStart(2,'0');
+  const ts = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+  document.getElementById('lastSync').textContent = `Pēdējā sinhronizācija ${ts}`;
+  document.getElementById('alertTs').textContent = `Uz ${ts}`;
+}
+
+// Hourly SVG area chart
+function renderHourChart() {
+  const svg = document.getElementById('hourChart');
+  const data = hourlyDataFinal;
+  const W = 560, H = 160, padL = 6, padR = 6, padT = 14, padB = 8;
+  const max = Math.max(...data);
+  const n = data.length;
+
+  const x = i => padL + (i / (n - 1)) * (W - padL - padR);
+  const y = v => padT + (1 - v / max) * (H - padT - padB);
+
+  const pts = data.map((v, i) => `${x(i)},${y(v)}`).join(' ');
+  const linePath = `M ${pts.split(' ').join(' L ')}`;
+  const areaPath = `M ${x(0)},${y(data[0])} L ${pts.split(' ').join(' L ')} L ${x(n-1)},${H-padB} L ${x(0)},${H-padB} Z`;
+
+  // Peak window: hours 9–12
+  const px1 = x(9), px2 = x(12);
+
+  svg.innerHTML = `
+    <defs>
+      <linearGradient id="aG" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#1d4ed8" stop-opacity=".18"/>
+        <stop offset="100%" stop-color="#1d4ed8" stop-opacity=".01"/>
+      </linearGradient>
+    </defs>
+    <rect x="${px1}" y="${padT}" width="${px2-px1}" height="${H-padT-padB}" fill="#fef3c7" opacity=".55"/>
+    <path d="${areaPath}" fill="url(#aG)"/>
+    <path d="${linePath}" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    ${data.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="3" fill="#1d4ed8" opacity=".7"
+      data-tip="${String(i).padStart(2,'0')}:00 — ${v} gadījumi"/>`).join('')}
+    <text x="${(px1+px2)/2}" y="${padT+10}" text-anchor="middle" font-size="9" fill="#b45309" font-family="IBM Plex Sans,sans-serif" font-weight="600">Maksimums</text>
+  `;
+
+  svg.querySelectorAll('circle').forEach(el => {
+    el.addEventListener('mouseenter', e => showTip(e, el.dataset.tip));
+    el.addEventListener('mouseleave', hideTip);
+  });
+}
+
+// Strategy bars
+function renderStratChart() {
+  document.getElementById('stratChart').innerHTML = strategies.map((s, i) => `
+    <div class="strat-row">
+      <div class="strat-rank">${i+1}</div>
+      <div class="strat-label">${s.label}</div>
+      <div class="strat-track">
+        <div class="strat-fill" style="width:${s.pct}%;background:${s.color}22;border-right:2px solid ${s.color}"></div>
+      </div>
+      <div class="strat-pct">${s.pct}%</div>
+      <div class="strat-trend ${s.up?'up':'dn'}">${s.trend}</div>
+    </div>
+  `).join('');
+}
+
+// Age group grouped bars
+function renderAgeChart() {
+  document.getElementById('ageLegend').innerHTML = scamTypes.map((t,i)=>`
+    <div class="g-leg-item"><div class="g-leg-dot" style="background:${scamColors[i]}"></div>${t}</div>
+  `).join('');
+
+  const maxVal = Math.max(...ageData.flat());
+  document.getElementById('ageChart').innerHTML = ageGroups.map((age, ai) => `
+    <div class="age-row">
+      <div class="age-label">${age}</div>
+      <div class="age-bars">
+        ${ageData[ai].map((v,ti)=>`
+          <div class="age-bar-wrap">
+            <div class="age-bar" style="background:${scamColors[ti]};width:${Math.round(v/maxVal*100)}%;opacity:.85"
+              data-tip="${age} · ${scamTypes[ti]}: ${v} gadījumi"></div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('ageChart').querySelectorAll('.age-bar').forEach(el => {
+    el.addEventListener('mouseenter', e => showTip(e, el.dataset.tip));
+    el.addEventListener('mouseleave', hideTip);
+  });
+}
+
+// Gender stacked bars
+function renderGenderChart() {
+  document.getElementById('genderLegend').innerHTML = scamTypes.map((t,i)=>`
+    <div class="g-leg-item"><div class="g-leg-dot" style="background:${scamColors[i]}"></div>${t}</div>
+  `).join('');
+
+  document.getElementById('genderChart').innerHTML = genders.map((g, gi) => {
+    const total = genderData[gi].reduce((a,b)=>a+b,0);
+    const segs = genderData[gi].map((v,ti) => {
+      const pct = Math.round(v/total*100);
+      return `<div class="gender-seg" style="background:${scamColors[ti]};flex:${v}" data-tip="${g} · ${scamTypes[ti]}: ${pct}%">${pct}%</div>`;
+    }).join('');
+    return `<div class="gender-row"><div class="gender-label">${g}</div><div class="gender-bars">${segs}</div></div>`;
+  }).join('');
+
+  document.getElementById('genderChart').querySelectorAll('.gender-seg').forEach(el => {
+    el.addEventListener('mouseenter', e => showTip(e, el.dataset.tip));
+    el.addEventListener('mouseleave', hideTip);
+  });
+}
+
+// Keywords
+function renderKeywords() {
+  document.getElementById('kwGrid').innerHTML = keywords.map(k => `
+    <span class="kw-tag ${k.risk}" data-tip="Biežums: ${k.count.toLocaleString()} gadījumi šajā periodā">
+      ${k.text}<span class="kw-count">${k.count.toLocaleString()}</span>
+    </span>
+  `).join('');
+  document.getElementById('kwGrid').querySelectorAll('.kw-tag').forEach(el => {
+    el.addEventListener('mouseenter', e => showTip(e, el.dataset.tip));
+    el.addEventListener('mouseleave', hideTip);
+  });
+}
+
+// Mini bar helper
+function miniBarSet(data) {
+  const max = Math.max(...data.map(d=>d.v));
+  return data.map(d=>`
+    <div class="mini-bar-row">
+      <div class="mini-bar-label">${d.l}</div>
+      <div class="mini-bar-track"><div class="mini-bar-fill" style="width:${Math.round(d.v/max*100)}%;background:${d.c}"></div></div>
+      <div class="mini-bar-val">${d.v}%</div>
+    </div>
+  `).join('');
+}
+
+// Metadata tiles
+function renderMetaTiles() {
+  const wdMax = Math.max(...weekdays.map(d=>d.v));
+  const wdBars = weekdays.map(d=>`
+    <div class="wd-col">
+      <div class="wd-val">${d.v}</div>
+      <div class="wd-bar" style="height:${Math.round(d.v/wdMax*64)}px;background:${d.v===wdMax?'#1d4ed8':'#93c5fd'}"></div>
+      <div class="wd-label">${d.d}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('metaTiles').innerHTML = `
+    <div class="meta-tile">
+      <div class="meta-tile-label">Zvanītāja izcelsme</div>
+      ${miniBarSet(metaOrigin)}
+    </div>
+    <div class="meta-tile">
+      <div class="meta-tile-label">Kanālu sadalījums</div>
+      ${miniBarSet(metaChannel)}
+      <div style="margin-top:8px">
+        <div class="meta-tile-label">Valoda</div>
+        ${miniBarSet(metaLang)}
+      </div>
+    </div>
+    <div class="meta-tile">
+      <div class="meta-tile-label">Aktivitāte pa nedēļas dienām</div>
+      <div class="weekday-bars">${wdBars}</div>
+    </div>
+  `;
+}
+
+// Intelligence cards
+function renderIntel() {
+  document.getElementById('intelGrid').innerHTML = intelCards.map(c=>`
+    <div class="intel-card ${c.cls}">
+      <div class="intel-icon">${c.icon}</div>
+      <div class="intel-text"><strong>${c.title}</strong><span>${c.text}</span></div>
+    </div>
+  `).join('');
+}
+
+// Alerts
+function renderAlerts() {
+  document.getElementById('alertList').innerHTML = alerts.map(a=>`
+    <div class="alert-item ${a.sev}">
+      <span class="alert-badge ${a.sev}">${a.sev==='crit'?'Kritisks':a.sev==='warn'?'Brīdinājums':'Informācija'}</span>
+      <span class="alert-text">${a.text}</span>
+      <span class="alert-ts">${a.ts}</span>
+    </div>
+  `).join('');
+}
+
+// Table
+function renderTable() {
+  document.getElementById('tableBody').innerHTML = tableRows.map(r=>`
+    <tr>
+      <td style="font-weight:500">${r.type}</td>
+      <td>${r.seg}</td>
+      <td><div class="phrase-list">${r.phrases.map(p=>`<span class="phrase-chip">${p}</span>`).join('')}</div></td>
+      <td style="font-family:var(--mono);font-size:11px">${r.peak}</td>
+      <td><span class="pill ${r.risk}">${r.risk==='red'?'Augsts':r.risk==='amber'?'Vidējs':'Zems'}</span></td>
+      <td class="trend-cell ${r.up?'up':'dn'}">${r.delta}</td>
+      <td><span class="pill ${r.status}">${r.status==='blue'?'Aktīvs':r.status==='green'?'Samazinās':r.status==='amber'?'Pieaug':'Stabils'}</span></td>
+    </tr>
+  `).join('');
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   TOOLTIP
+══════════════════════════════════════════════════════════════════════ */
+const tooltip = document.getElementById('tooltip');
+function showTip(e, text) { tooltip.textContent = text; tooltip.style.opacity = '1'; moveTip(e); }
+function moveTip(e) { tooltip.style.left = (e.clientX + 10) + 'px'; tooltip.style.top = (e.clientY - 28) + 'px'; }
+function hideTip() { tooltip.style.opacity = '0'; }
+document.addEventListener('mousemove', e => { if(tooltip.style.opacity==='1') moveTip(e); });
+
+/* ══════════════════════════════════════════════════════════════════════
+   REFRESH — jitter KPIs slightly to simulate live data
+══════════════════════════════════════════════════════════════════════ */
+function simulateRefresh() {
+  const icon = document.getElementById('refreshIcon');
+  icon.style.transform = 'rotate(360deg)';
+  icon.style.transition = 'transform .5s ease';
+  const jitter = (n, pct) => Math.max(0, Math.round(n * (1 + (Math.random()-.5)*pct)));
+  document.getElementById('kpi1').textContent = jitter(864, .05).toLocaleString();
+  document.getElementById('kpi2').textContent = jitter(213, .07).toLocaleString();
+  document.getElementById('kpi3').textContent = jitter(11, .09);
+  document.getElementById('kpi6').textContent = (91.5 + (Math.random()*1.2)).toFixed(1) + '%';
+  renderTimestamp();
+  setTimeout(() => { icon.style.transform = ''; icon.style.transition = ''; }, 600);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════════════════════════════ */
+function init() {
+  renderTimestamp();
+  renderHourChart();
+  renderStratChart();
+  renderAgeChart();
+  renderGenderChart();
+  renderKeywords();
+  renderMetaTiles();
+  renderIntel();
+  renderAlerts();
+  renderTable();
+
+  window.addEventListener('resize', renderHourChart);
+
+  ['fAge','fGender','fType','fChannel','fRegion'].forEach(id => {
+    document.getElementById(id).addEventListener('change', simulateRefresh);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

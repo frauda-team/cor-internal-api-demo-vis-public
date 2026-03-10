@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="lv">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Frauda — Scam Detection Tool</title>
+<title>Frauda — Ziņojumu pārbaudes rīks</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -44,7 +44,7 @@
     min-height: 100vh;
   }
 
-  /* ─── Header / Navbar ─── */
+  /* ─── Navbar ─── */
   .navbar {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
@@ -57,683 +57,173 @@
     top: 0;
     z-index: 100;
   }
+  .navbar-left { display: flex; align-items: center; gap: 10px; }
+  .navbar-logo { height: 28px; width: auto; }
+  .navbar-brand { font-size: 16px; font-weight: 600; color: var(--text-primary); letter-spacing: -0.02em; }
+  .navbar-divider { width: 1px; height: 18px; background: var(--border); margin: 0 4px; }
+  .navbar-subtitle { font-size: 12px; color: var(--text-muted); font-weight: 400; }
+  .navbar-right { display: flex; align-items: center; gap: 14px; }
 
-  .navbar-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .navbar-logo {
-    height: 28px;
-    width: auto;
-  }
-
-  .navbar-brand {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--text-primary);
-    letter-spacing: -0.02em;
-  }
-
-  .navbar-divider {
-    width: 1px;
-    height: 18px;
-    background: var(--border);
-    margin: 0 4px;
-  }
-
-  .navbar-subtitle {
-    font-size: 12px;
-    color: var(--text-muted);
-    font-weight: 400;
-  }
-
-  .navbar-right {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .api-status {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 12px;
-    color: var(--text-secondary);
-    padding: 4px 10px;
-    background: var(--risk-green-bg);
-    border: 1px solid var(--risk-green-border);
-    border-radius: 4px;
-  }
-
-  .api-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #16a34a;
-    animation: pulse-dot 2.5s ease-in-out infinite;
-  }
-
-  @keyframes pulse-dot {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-
-  .navbar-user {
-    font-size: 12px;
-    color: var(--text-secondary);
-  }
-
-  /* ─── Main Layout ─── */
-  .main {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 28px 24px 60px;
-  }
-
-  /* ─── Page Header ─── */
-  .page-header {
-    margin-bottom: 24px;
-  }
-
-  .page-title {
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 4px;
-  }
-
-  .page-desc {
-    font-size: 13px;
-    color: var(--text-secondary);
-  }
-
-  /* ─── Section ─── */
-  .section {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    margin-bottom: 16px;
-    overflow: hidden;
-  }
-
-  .section-header {
-    padding: 14px 18px;
-    border-bottom: 1px solid var(--border-light);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #fafbfc;
-  }
-
-  .section-title {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
-
-  .section-body {
-    padding: 18px;
-  }
-
-  /* ─── Process Flow ─── */
-  .process-flow {
-    display: flex;
-    align-items: flex-start;
-    gap: 0;
-    overflow-x: auto;
-    padding-bottom: 4px;
-  }
-
-  .process-step {
-    flex: 1;
-    min-width: 120px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    position: relative;
-  }
-
-  .process-step:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    top: 14px;
-    right: -1px;
-    width: 50%;
-    height: 1px;
-    background: var(--border);
-    z-index: 1;
-  }
-
-  .process-step:not(:first-child)::before {
-    content: '';
-    position: absolute;
-    top: 14px;
-    left: -1px;
-    width: 50%;
-    height: 1px;
-    background: var(--border);
-    z-index: 1;
-  }
-
-  .step-icon {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text-muted);
-    position: relative;
-    z-index: 2;
-    transition: all 0.2s;
-  }
-
-  .step-icon.active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: white;
-  }
-
-  .step-icon.done {
-    background: #16a34a;
-    border-color: #16a34a;
-    color: white;
-  }
-
-  .step-label {
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-top: 6px;
-    line-height: 1.3;
-  }
-
-  .step-label.active {
-    color: var(--accent);
-    font-weight: 500;
-  }
-
-  .step-label.done {
-    color: #16a34a;
-    font-weight: 500;
-  }
-
-  /* ─── Input Area ─── */
-  .input-area {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 14px;
-    border-radius: 5px;
-    font-size: 13px;
-    font-weight: 500;
-    font-family: var(--font-ui);
-    cursor: pointer;
-    border: 1px solid transparent;
-    transition: all 0.15s;
-    white-space: nowrap;
-  }
-
-  .btn-primary {
-    background: var(--accent);
-    color: white;
-    border-color: var(--accent);
-  }
-
-  .btn-primary:hover:not(:disabled) {
-    background: var(--accent-hover);
-    border-color: var(--accent-hover);
-  }
-
-  .btn-secondary {
-    background: white;
-    color: var(--text-primary);
-    border-color: var(--border);
-  }
-
-  .btn-secondary:hover:not(:disabled) {
-    background: var(--bg);
-    border-color: #c9cdd4;
-  }
-
-  .btn-ghost {
-    background: transparent;
-    color: var(--text-secondary);
-    border-color: transparent;
-    padding: 6px 10px;
-    font-size: 12px;
-  }
-
-  .btn-ghost:hover {
-    background: var(--bg);
-    color: var(--text-primary);
-  }
-
-  .btn:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-  }
-
-  /* ─── Loading ─── */
-  .loading-area {
-    display: none;
-    padding: 28px 18px;
-  }
-
-  .loading-area.visible {
-    display: block;
-  }
-
-  .loading-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 14px;
-  }
-
-  .loading-label {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text-primary);
-  }
-
-  .loading-pct {
-    font-size: 12px;
-    color: var(--text-secondary);
-    font-family: var(--font-mono);
-  }
-
-  .progress-track {
-    height: 3px;
-    background: var(--border);
-    border-radius: 2px;
-    overflow: hidden;
-    margin-bottom: 16px;
-  }
-
-  .progress-fill {
-    height: 100%;
-    background: var(--accent);
-    border-radius: 2px;
-    width: 0%;
-    transition: width 0.4s ease;
-  }
-
-  .loading-steps {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .loading-step {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 12px;
-    color: var(--text-muted);
-    transition: color 0.2s;
-  }
-
-  .loading-step.done {
-    color: #16a34a;
-  }
-
-  .loading-step.active {
-    color: var(--text-primary);
-    font-weight: 500;
-  }
-
-  .loading-step-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--border);
-    flex-shrink: 0;
-  }
-
-  .loading-step.done .loading-step-dot { background: #16a34a; }
-  .loading-step.active .loading-step-dot { background: var(--accent); animation: pulse-dot 1s ease-in-out infinite; }
-
-  /* ─── Awaiting state ─── */
-  .awaiting-area {
-    padding: 36px 18px;
-    text-align: center;
-    color: var(--text-muted);
-    font-size: 13px;
-    border-top: 1px solid var(--border-light);
-  }
-
-  /* ─── Result Block ─── */
-  .result-area {
-    display: none;
-  }
-
-  .result-area.visible {
-    display: block;
-  }
-
-  /* Score row */
-  .score-row {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    padding: 18px;
-    border-bottom: 1px solid var(--border-light);
-    flex-wrap: wrap;
-  }
-
-  .score-gauge {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-shrink: 0;
-  }
-
-  .score-number {
-    font-size: 36px;
-    font-weight: 600;
-    font-family: var(--font-mono);
-    line-height: 1;
-  }
-
-  .score-number.red { color: var(--risk-red); }
-  .score-number.yellow { color: var(--risk-yellow); }
-  .score-number.green { color: var(--risk-green); }
-
-  .score-unit {
-    font-size: 11px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    margin-top: 2px;
-  }
-
-  .risk-badge {
+  /* ─── Nav link to dashboard ─── */
+  .nav-page-link {
     display: inline-flex;
     align-items: center;
     gap: 5px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
     padding: 4px 10px;
+    border: 1px solid var(--border);
     border-radius: 4px;
-    font-size: 12px;
-    font-weight: 600;
-    border: 1px solid;
-  }
-
-  .risk-badge.red {
-    background: var(--risk-red-bg);
-    color: var(--risk-red);
-    border-color: var(--risk-red-border);
-  }
-
-  .risk-badge.yellow {
-    background: var(--risk-yellow-bg);
-    color: var(--risk-yellow);
-    border-color: var(--risk-yellow-border);
-  }
-
-  .risk-badge.green {
-    background: var(--risk-green-bg);
-    color: var(--risk-green);
-    border-color: var(--risk-green-border);
-  }
-
-  .score-meta {
-    flex: 1;
-    min-width: 200px;
-  }
-
-  .score-summary {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text-primary);
-    margin-bottom: 4px;
-  }
-
-  .score-note {
-    font-size: 12px;
-    color: var(--text-secondary);
-  }
-
-  /* Metadata cards */
-  .meta-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 1px;
-    background: var(--border);
-    border-top: 1px solid var(--border);
-  }
-
-  .meta-card {
     background: var(--surface);
-    padding: 12px 16px;
+    transition: all 0.15s;
+    white-space: nowrap;
   }
-
-  .meta-label {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    color: var(--text-muted);
-    margin-bottom: 3px;
-    font-weight: 600;
-  }
-
-  .meta-value {
-    font-size: 13px;
-    font-weight: 500;
+  .nav-page-link:hover {
+    background: var(--bg);
     color: var(--text-primary);
-    font-family: var(--font-mono);
+    border-color: #c9cdd4;
   }
+  .nav-page-link svg { flex-shrink: 0; }
 
-  /* Transcript */
-  .transcript-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 18px;
-    border-top: 1px solid var(--border-light);
-    border-bottom: 1px solid var(--border-light);
-    background: #fafbfc;
+  .api-status {
+    display: flex; align-items: center; gap: 6px; font-size: 12px;
+    color: var(--text-secondary); padding: 4px 10px;
+    background: var(--risk-green-bg); border: 1px solid var(--risk-green-border); border-radius: 4px;
   }
-
-  .transcript-label {
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--text-secondary);
+  .api-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: #16a34a;
+    animation: pulse-dot 2.5s ease-in-out infinite;
   }
+  @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .navbar-user { font-size: 12px; color: var(--text-secondary); }
 
-  .transcript-body {
-    padding: 14px 18px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  /* ─── Layout ─── */
+  .main { max-width: 960px; margin: 0 auto; padding: 28px 24px 60px; }
+
+  .page-header { margin-bottom: 24px; }
+  .page-title { font-size: 18px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+  .page-desc { font-size: 13px; color: var(--text-secondary); }
+
+  /* ─── Section ─── */
+  .section {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; margin-bottom: 16px; overflow: hidden;
   }
-
-  .msg {
-    display: flex;
-    gap: 10px;
-    max-width: 88%;
+  .section-header {
+    padding: 14px 18px; border-bottom: 1px solid var(--border-light);
+    display: flex; align-items: center; justify-content: space-between; background: #fafbfc;
   }
+  .section-title { font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; }
+  .section-body { padding: 18px; }
 
+  /* ─── Process Flow ─── */
+  .process-flow { display: flex; align-items: flex-start; gap: 0; overflow-x: auto; padding-bottom: 4px; }
+  .process-step { flex: 1; min-width: 120px; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; }
+  .process-step:not(:last-child)::after { content: ''; position: absolute; top: 14px; right: -1px; width: 50%; height: 1px; background: var(--border); z-index: 1; }
+  .process-step:not(:first-child)::before { content: ''; position: absolute; top: 14px; left: -1px; width: 50%; height: 1px; background: var(--border); z-index: 1; }
+  .step-icon {
+    width: 28px; height: 28px; border-radius: 50%; background: var(--bg); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600; color: var(--text-muted); position: relative; z-index: 2; transition: all 0.2s;
+  }
+  .step-icon.active { background: var(--accent); border-color: var(--accent); color: white; }
+  .step-icon.done { background: #16a34a; border-color: #16a34a; color: white; }
+  .step-label { font-size: 11px; color: var(--text-muted); margin-top: 6px; line-height: 1.3; }
+  .step-label.active { color: var(--accent); font-weight: 500; }
+  .step-label.done { color: #16a34a; font-weight: 500; }
+
+  /* ─── Buttons ─── */
+  .input-area { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 5px; font-size: 13px; font-weight: 500; font-family: var(--font-ui); cursor: pointer; border: 1px solid transparent; transition: all 0.15s; white-space: nowrap; }
+  .btn-primary { background: var(--accent); color: white; border-color: var(--accent); }
+  .btn-primary:hover:not(:disabled) { background: var(--accent-hover); border-color: var(--accent-hover); }
+  .btn-secondary { background: white; color: var(--text-primary); border-color: var(--border); }
+  .btn-secondary:hover:not(:disabled) { background: var(--bg); border-color: #c9cdd4; }
+  .btn-ghost { background: transparent; color: var(--text-secondary); border-color: transparent; padding: 6px 10px; font-size: 12px; }
+  .btn-ghost:hover { background: var(--bg); color: var(--text-primary); }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  /* ─── Loading ─── */
+  .loading-area { display: none; padding: 28px 18px; }
+  .loading-area.visible { display: block; }
+  .loading-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .loading-label { font-size: 13px; font-weight: 500; color: var(--text-primary); }
+  .loading-pct { font-size: 12px; color: var(--text-secondary); font-family: var(--font-mono); }
+  .progress-track { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; margin-bottom: 16px; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 2px; width: 0%; transition: width 0.4s ease; }
+  .loading-steps { display: flex; flex-direction: column; gap: 6px; }
+  .loading-step { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--text-muted); transition: color 0.2s; }
+  .loading-step.done { color: #16a34a; }
+  .loading-step.active { color: var(--text-primary); font-weight: 500; }
+  .loading-step-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
+  .loading-step.done .loading-step-dot { background: #16a34a; }
+  .loading-step.active .loading-step-dot { background: var(--accent); animation: pulse-dot 1s ease-in-out infinite; }
+
+  /* ─── Awaiting ─── */
+  .awaiting-area { padding: 36px 18px; text-align: center; color: var(--text-muted); font-size: 13px; border-top: 1px solid var(--border-light); }
+
+  /* ─── Result ─── */
+  .result-area { display: none; }
+  .result-area.visible { display: block; }
+
+  .score-row { display: flex; align-items: center; gap: 20px; padding: 18px; border-bottom: 1px solid var(--border-light); flex-wrap: wrap; }
+  .score-gauge { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+  .score-number { font-size: 36px; font-weight: 600; font-family: var(--font-mono); line-height: 1; }
+  .score-number.red { color: var(--risk-red); }
+  .score-number.yellow { color: var(--risk-yellow); }
+  .score-number.green { color: var(--risk-green); }
+  .score-unit { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+
+  .risk-badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 600; border: 1px solid; }
+  .risk-badge.red { background: var(--risk-red-bg); color: var(--risk-red); border-color: var(--risk-red-border); }
+  .risk-badge.yellow { background: var(--risk-yellow-bg); color: var(--risk-yellow); border-color: var(--risk-yellow-border); }
+  .risk-badge.green { background: var(--risk-green-bg); color: var(--risk-green); border-color: var(--risk-green-border); }
+
+  .score-meta { flex: 1; min-width: 200px; }
+  .score-summary { font-size: 14px; font-weight: 500; color: var(--text-primary); margin-bottom: 4px; }
+  .score-note { font-size: 12px; color: var(--text-secondary); }
+
+  .meta-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1px; background: var(--border); border-top: 1px solid var(--border); }
+  .meta-card { background: var(--surface); padding: 12px 16px; }
+  .meta-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); margin-bottom: 3px; font-weight: 600; }
+  .meta-value { font-size: 13px; font-weight: 500; color: var(--text-primary); font-family: var(--font-mono); }
+
+  .transcript-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 18px; border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); background: #fafbfc; }
+  .transcript-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-secondary); }
+  .transcript-body { padding: 14px 18px; display: flex; flex-direction: column; gap: 10px; }
+
+  .msg { display: flex; gap: 10px; max-width: 88%; }
   .msg.victim { align-self: flex-end; flex-direction: row-reverse; }
   .msg.scammer { align-self: flex-start; }
-
-  .msg-avatar {
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    font-weight: 700;
-    color: white;
-    margin-top: 2px;
-  }
-
+  .msg-avatar { width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: white; margin-top: 2px; }
   .msg.victim .msg-avatar { background: #6366f1; }
   .msg.scammer .msg-avatar { background: #94a3b8; }
+  .msg-bubble { padding: 8px 12px; border-radius: 8px; font-size: 13px; line-height: 1.5; }
+  .msg.victim .msg-bubble { background: var(--accent-light); border: 1px solid #dbeafe; color: var(--text-primary); border-bottom-right-radius: 2px; }
+  .msg.scammer .msg-bubble { background: var(--bg); border: 1px solid var(--border); color: var(--text-primary); border-bottom-left-radius: 2px; }
+  .msg-role { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); font-weight: 600; margin-bottom: 3px; }
 
-  .msg-bubble {
-    padding: 8px 12px;
-    border-radius: 8px;
-    font-size: 13px;
-    line-height: 1.5;
-  }
+  .text-msg { padding: 10px 14px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; font-size: 13px; line-height: 1.6; color: var(--text-primary); }
+  .flag { background: #fef9c3; border-bottom: 2px solid #f59e0b; padding: 0 2px; border-radius: 2px; font-weight: 500; }
 
-  .msg.victim .msg-bubble {
-    background: var(--accent-light);
-    border: 1px solid #dbeafe;
-    color: var(--text-primary);
-    border-bottom-right-radius: 2px;
-  }
-
-  .msg.scammer .msg-bubble {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    color: var(--text-primary);
-    border-bottom-left-radius: 2px;
-  }
-
-  .msg-role {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--text-muted);
-    font-weight: 600;
-    margin-bottom: 3px;
-  }
-
-  /* For text messages (non-voice), single bubble layout */
-  .text-msg {
-    padding: 10px 14px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    font-size: 13px;
-    line-height: 1.6;
-    color: var(--text-primary);
-  }
-
-  /* Highlighted suspicious phrases */
-  .flag {
-    background: #fef9c3;
-    border-bottom: 2px solid #f59e0b;
-    padding: 0 2px;
-    border-radius: 2px;
-    font-weight: 500;
-  }
-
-  /* Indicators */
-  .indicators-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding: 14px 18px;
-  }
-
-  .indicator-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 10px 12px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    background: var(--bg);
-  }
-
-  .indicator-rank {
-    font-size: 11px;
-    font-weight: 700;
-    color: white;
-    background: var(--accent);
-    border-radius: 3px;
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-
+  .indicators-list { display: flex; flex-direction: column; gap: 8px; padding: 14px 18px; }
+  .indicator-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); }
+  .indicator-rank { font-size: 11px; font-weight: 700; color: white; background: var(--accent); border-radius: 3px; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
   .indicator-rank.red { background: var(--risk-red); }
   .indicator-rank.yellow { background: #d97706; }
+  .indicator-text strong { font-size: 13px; font-weight: 600; display: block; margin-bottom: 2px; }
+  .indicator-text span { font-size: 12px; color: var(--text-secondary); }
 
-  .indicator-text strong {
-    font-size: 13px;
-    font-weight: 600;
-    display: block;
-    margin-bottom: 2px;
-  }
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; padding: 12px 18px; border-top: 1px solid var(--border-light); background: #fafbfc; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-secondary); }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
 
-  .indicator-text span {
-    font-size: 12px;
-    color: var(--text-secondary);
-  }
-
-  /* Risk legend */
-  .legend {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    padding: 12px 18px;
-    border-top: 1px solid var(--border-light);
-    background: #fafbfc;
-  }
-
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    color: var(--text-secondary);
-  }
-
-  .legend-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-  }
-
-  /* Actions bar */
-  .actions-bar {
-    display: flex;
-    gap: 8px;
-    padding: 14px 18px;
-    border-top: 1px solid var(--border-light);
-    background: #fafbfc;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-
-  .copy-success {
-    font-size: 12px;
-    color: #16a34a;
-    opacity: 0;
-    transition: opacity 0.3s;
-    margin-left: 4px;
-  }
-
+  .actions-bar { display: flex; gap: 8px; padding: 14px 18px; border-top: 1px solid var(--border-light); background: #fafbfc; flex-wrap: wrap; align-items: center; }
+  .copy-success { font-size: 12px; color: #16a34a; opacity: 0; transition: opacity 0.3s; margin-left: 4px; }
   .copy-success.show { opacity: 1; }
 
-  /* Responsive */
   @media (max-width: 640px) {
     .main { padding: 16px 12px 48px; }
     .navbar { padding: 0 12px; }
@@ -742,12 +232,7 @@
     .process-flow { gap: 0; }
   }
 
-  /* Subtle fade in */
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(4px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
   .fade-in { animation: fadeIn 0.25s ease forwards; }
 </style>
 </head>
@@ -756,7 +241,6 @@
 <!-- ─── Navbar ─── -->
 <header class="navbar">
   <div class="navbar-left">
-    <!-- Frauda logo SVG inline -->
     <svg class="navbar-logo" viewBox="0 0 53.50151 75.068283" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <defs>
         <linearGradient id="ng75"><stop style="stop-color:#000220;stop-opacity:1;" offset="0"/><stop style="stop-color:#225abc;stop-opacity:1;" offset="1"/></linearGradient>
@@ -778,114 +262,116 @@
     </svg>
     <span class="navbar-brand">Frauda</span>
     <div class="navbar-divider"></div>
-    <span class="navbar-subtitle">Internal Detection Tool</span>
+    <span class="navbar-subtitle">Iekšējais pārbaudes rīks</span>
   </div>
   <div class="navbar-right">
+    <!-- Navigation to dashboard -->
+    <a href="dashboard.html" class="nav-page-link">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Datu panelis
+    </a>
     <div class="api-status">
       <div class="api-dot"></div>
-      API connected
+      API savienots
     </div>
-    <span class="navbar-user">analyst@company.internal</span>
+    <span class="navbar-user">analysts@frauda.lv</span>
   </div>
 </header>
 
-<!-- ─── Main Content ─── -->
+<!-- ─── Main ─── -->
 <main class="main">
 
   <div class="page-header">
-    <div class="page-title">Scam message analysis</div>
-    <div class="page-desc">Submit a text or voice message sample for automated scam detection. Results include scam score, metadata, transcript, and top indicators.</div>
+    <div class="page-title">Krāpniecisko ziņojumu analīze</div>
+    <div class="page-desc">Iesniedziet teksta vai balss ziņojuma paraugu automatizētai krāpniecības noteikšanai. Rezultāti ietver riska novērtējumu, metadatus, transkriptu un galvenos indikatorus.</div>
   </div>
 
   <!-- ─── Analysis Flow ─── -->
   <div class="section">
     <div class="section-header">
-      <span class="section-title">Analysis flow</span>
+      <span class="section-title">Analīzes plūsma</span>
     </div>
     <div class="section-body">
       <div class="process-flow" id="processFlow">
         <div class="process-step">
           <div class="step-icon" id="step1Icon">1</div>
-          <div class="step-label" id="step1Label">Input</div>
+          <div class="step-label" id="step1Label">Ievade</div>
         </div>
         <div class="process-step">
           <div class="step-icon" id="step2Icon">2</div>
-          <div class="step-label" id="step2Label">Preprocessing</div>
+          <div class="step-label" id="step2Label">Priekšapstrāde</div>
         </div>
         <div class="process-step">
           <div class="step-icon" id="step3Icon">3</div>
-          <div class="step-label" id="step3Label">NLP scan</div>
+          <div class="step-label" id="step3Label">NLP skenēšana</div>
         </div>
         <div class="process-step">
           <div class="step-icon" id="step4Icon">4</div>
-          <div class="step-label" id="step4Label">Pattern match</div>
+          <div class="step-label" id="step4Label">Paraugu atpazīšana</div>
         </div>
         <div class="process-step">
           <div class="step-icon" id="step5Icon">5</div>
-          <div class="step-label" id="step5Label">Scoring</div>
+          <div class="step-label" id="step5Label">Vērtēšana</div>
         </div>
         <div class="process-step">
           <div class="step-icon" id="step6Icon">6</div>
-          <div class="step-label" id="step6Label">Result</div>
+          <div class="step-label" id="step6Label">Rezultāts</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ─── Add Sample ─── -->
+  <!-- ─── Submit Sample ─── -->
   <div class="section">
     <div class="section-header">
-      <span class="section-title">Submit sample</span>
+      <span class="section-title">Iesniegt paraugu</span>
     </div>
     <div class="section-body">
       <div class="input-area">
         <button class="btn btn-primary" id="btnText" onclick="addSample('text')">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          Add text message
+          Pievienot teksta ziņojumu
         </button>
         <button class="btn btn-secondary" id="btnVoice" onclick="addSample('voice')">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
-          Add voice message
+          Pievienot balss ziņojumu
         </button>
       </div>
     </div>
 
-    <!-- Loading area -->
     <div class="loading-area" id="loadingArea">
       <div class="loading-header">
-        <span class="loading-label" id="loadingLabel">Analyzing message…</span>
+        <span class="loading-label" id="loadingLabel">Analizē ziņojumu…</span>
         <span class="loading-pct" id="loadingPct">0%</span>
       </div>
       <div class="progress-track">
         <div class="progress-fill" id="progressFill"></div>
       </div>
       <div class="loading-steps">
-        <div class="loading-step" id="ls1"><div class="loading-step-dot"></div>Receiving and preprocessing input</div>
-        <div class="loading-step" id="ls2"><div class="loading-step-dot"></div>Running NLP tokenization and entity extraction</div>
-        <div class="loading-step" id="ls3"><div class="loading-step-dot"></div>Matching against scam pattern library</div>
-        <div class="loading-step" id="ls4"><div class="loading-step-dot"></div>Computing risk score and indicators</div>
-        <div class="loading-step" id="ls5"><div class="loading-step-dot"></div>Generating detection result</div>
+        <div class="loading-step" id="ls1"><div class="loading-step-dot"></div>Saņem un priekšapstrādā ievadi</div>
+        <div class="loading-step" id="ls2"><div class="loading-step-dot"></div>Veic NLP tokenizāciju un entitāšu izvilkšanu</div>
+        <div class="loading-step" id="ls3"><div class="loading-step-dot"></div>Salīdzina ar krāpniecības paraugu bibliotēku</div>
+        <div class="loading-step" id="ls4"><div class="loading-step-dot"></div>Aprēķina riska novērtējumu un indikatorus</div>
+        <div class="loading-step" id="ls5"><div class="loading-step-dot"></div>Ģenerē noteikšanas rezultātu</div>
       </div>
     </div>
 
-    <!-- Awaiting state -->
     <div class="awaiting-area" id="awaitingArea">
-      No sample submitted. Press "Add text message" or "Add voice message" to begin.
+      Nav iesniegts neviens paraugs. Nospiediet "Pievienot teksta ziņojumu" vai "Pievienot balss ziņojumu", lai sāktu.
     </div>
   </div>
 
   <!-- ─── Detection Result ─── -->
   <div class="section result-area" id="resultArea">
     <div class="section-header">
-      <span class="section-title">Detection result</span>
+      <span class="section-title">Noteikšanas rezultāts</span>
       <span id="caseTypeBadge" style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;"></span>
     </div>
 
-    <!-- Score row -->
     <div class="score-row">
       <div class="score-gauge">
         <div class="score-number" id="scoreNumber">—</div>
-        <div class="score-unit">Scam score</div>
+        <div class="score-unit">Riska novērtējums</div>
       </div>
       <div>
         <div class="risk-badge" id="riskBadge">—</div>
@@ -897,360 +383,338 @@
       </div>
     </div>
 
-    <!-- Metadata grid -->
     <div class="meta-grid">
-      <div class="meta-card">
-        <div class="meta-label">Type</div>
-        <div class="meta-value" id="metaType">—</div>
-      </div>
-      <div class="meta-card">
-        <div class="meta-label">Duration / Length</div>
-        <div class="meta-value" id="metaDuration">—</div>
-      </div>
-      <div class="meta-card">
-        <div class="meta-label">Caller ID</div>
-        <div class="meta-value" id="metaCaller">—</div>
-      </div>
-      <div class="meta-card">
-        <div class="meta-label">Origin</div>
-        <div class="meta-value" id="metaOrigin">—</div>
-      </div>
-      <div class="meta-card">
-        <div class="meta-label">Language</div>
-        <div class="meta-value" id="metaLang">—</div>
-      </div>
-      <div class="meta-card">
-        <div class="meta-label">Analysed at</div>
-        <div class="meta-value" id="metaTime">—</div>
-      </div>
+      <div class="meta-card"><div class="meta-label">Tips</div><div class="meta-value" id="metaType">—</div></div>
+      <div class="meta-card"><div class="meta-label">Ilgums / Garums</div><div class="meta-value" id="metaDuration">—</div></div>
+      <div class="meta-card"><div class="meta-label">Zvanītāja numurs</div><div class="meta-value" id="metaCaller">—</div></div>
+      <div class="meta-card"><div class="meta-label">Izcelsme</div><div class="meta-value" id="metaOrigin">—</div></div>
+      <div class="meta-card"><div class="meta-label">Valoda</div><div class="meta-value" id="metaLang">—</div></div>
+      <div class="meta-card"><div class="meta-label">Analizēts</div><div class="meta-value" id="metaTime">—</div></div>
     </div>
 
-    <!-- Transcript -->
     <div class="transcript-header">
-      <span class="transcript-label" id="transcriptLabel">Transcript</span>
+      <span class="transcript-label" id="transcriptLabel">Transkripts</span>
     </div>
     <div class="transcript-body" id="transcriptBody"></div>
 
-    <!-- Indicators -->
     <div class="section-header" style="border-top:1px solid var(--border-light);">
-      <span class="section-title">Top indicators</span>
+      <span class="section-title">Galvenie indikatori</span>
     </div>
     <div class="indicators-list" id="indicatorsList"></div>
 
-    <!-- Legend + Actions -->
     <div class="legend">
-      <div class="legend-item"><div class="legend-dot" style="background:#16a34a;"></div>Likely not scam (0–35)</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#d97706;"></div>Not sure (36–65)</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#b91c1c;"></div>Likely scam (66–100)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#16a34a;"></div>Visticamāk nav krāpniecība (0–35)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#d97706;"></div>Neskaidrs (36–65)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#b91c1c;"></div>Visticamāk krāpniecība (66–100)</div>
     </div>
 
     <div class="actions-bar">
       <button class="btn btn-secondary" id="btnCopy" onclick="copyTranscript()">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-        Copy transcript
+        Kopēt transkriptu
       </button>
-      <span class="copy-success" id="copySuccess">Copied to clipboard</span>
+      <span class="copy-success" id="copySuccess">Nokopēts starpliktuvē</span>
       <div style="flex:1;"></div>
-      <button class="btn btn-ghost" onclick="resetTool()">Run another check</button>
+      <button class="btn btn-ghost" onclick="resetTool()">Veikt vēl vienu pārbaudi</button>
     </div>
   </div>
 
 </main>
 
 <script>
-// ─── Case Data ───────────────────────────────────────────────────────────────
+// ─── Case Data — Latvia localized ─────────────────────────────────────────────
 
-// TEXT CASES: 3 distinct cases (scam / unsure / not scam)
+// TEXT CASES: 3 cases (scam / unsure / not scam)
 const textCases = [
   {
-    // Case T1: Likely scam
-    score: 91,
+    // T1: Likely scam — Citadele bank impersonation SMS
+    score: 93,
     risk: 'red',
-    riskLabel: 'Likely scam',
-    summary: 'High-confidence scam pattern detected.',
-    note: 'Multiple social engineering markers present. Recommend escalation.',
+    riskLabel: 'Visticamāk krāpniecība',
+    summary: 'Augsta ticamības krāpniecības shēma konstatēta.',
+    note: 'Vairāki sociālās inženierijas marķieri. Ieteicama eskalācija.',
     meta: {
       type: 'SMS',
-      duration: '147 chars',
-      caller: '+1 (202) 555-0183',
-      origin: 'US (VOIP)',
-      lang: 'English',
+      duration: '152 rakstzīmes',
+      caller: '+371 2918 4403',
+      origin: 'LV (VoIP)',
+      lang: 'Latviešu',
     },
-    transcript: `<div class="text-msg">Hi, this is <span class="flag">HSBC Security</span>. Your account has been <span class="flag">flagged for unusual activity</span>. To <span class="flag">avoid suspension</span>, verify your identity immediately via the link below. <span class="flag">Failure to act within 24 hours</span> will result in a permanent block. http://hsbc-secure-verify[.]com/confirm</div>`,
+    transcript: `<div class="text-msg">Sveiki, šī ir <span class="flag">Citadele banka</span>. Jūsu konts ir <span class="flag">bloķēts neparastas darbības dēļ</span>. Lai <span class="flag">izvairītos no konta slēgšanas</span>, nekavējoties apstipriniet savu identitāti: https://citadele-verify[.]lv/drosiba — <span class="flag">48 stundu laikā</span>, pretējā gadījumā konts tiks slēgts.</div>`,
     indicators: [
-      { rank: 'red', label: 'Urgency / threat language', detail: 'Phrases like "failure to act within 24 hours" and "avoid suspension" are classic pressure tactics.' },
-      { rank: 'red', label: 'Impersonation of financial institution', detail: 'Sender claims to be HSBC Security but originates from a VOIP number.' },
-      { rank: 'red', label: 'Suspicious external link', detail: 'Link domain does not match the institution\'s official domain.' },
-      { rank: 'yellow', label: 'Unusual number origin', detail: 'US VOIP number used for what is claimed to be a UK bank.' },
+      { rank: 'red', label: 'Steidzamības / draudu valoda', detail: 'Frāzes "bloķēts", "izvairīties no slēgšanas" un "48 stundu laikā" ir tipiskas spiediena taktikas.' },
+      { rank: 'red', label: 'Finanšu iestādes uzdošanās', detail: 'Sūtītājs uzdodas par Citadele banku, bet ziņojums nāk no VoIP numura.' },
+      { rank: 'red', label: 'Aizdomīga ārējā saite', detail: 'Domēns "citadele-verify[.]lv" nav bankas oficialais domēns.' },
+      { rank: 'yellow', label: 'Neparasts numura izcelsmes reģions', detail: 'Latvijas mobilā numura formāts, bet VoIP izcelsme — iespējams, nomaskēts numurs.' },
     ],
-    transcriptRaw: 'Hi, this is HSBC Security. Your account has been flagged for unusual activity. To avoid suspension, verify your identity immediately via the link below. Failure to act within 24 hours will result in a permanent block. http://hsbc-secure-verify.com/confirm'
+    transcriptRaw: 'Sveiki, šī ir Citadele banka. Jūsu konts ir bloķēts neparastas darbības dēļ. Lai izvairītos no konta slēgšanas, nekavējoties apstipriniet savu identitāti: https://citadele-verify.lv/drosiba — 48 stundu laikā, pretējā gadījumā konts tiks slēgts.'
   },
   {
-    // Case T2: Not sure
-    score: 52,
+    // T2: Not sure — parcel delivery fee
+    score: 49,
     risk: 'yellow',
-    riskLabel: 'Not sure',
-    summary: 'Some risk indicators present; manual review recommended.',
-    note: 'Message contains ambiguous urgency language. Context may be legitimate.',
+    riskLabel: 'Neskaidrs',
+    summary: 'Daži riska indikatori. Ieteicama manuāla pārskatīšana.',
+    note: 'Ziņojums satur neskaidru steidzamības valodu. Konteksts var būt likumīgs.',
     meta: {
       type: 'SMS',
-      duration: '112 chars',
-      caller: '+44 7700 900341',
-      origin: 'UK (Mobile)',
-      lang: 'English',
+      duration: '118 rakstzīmes',
+      caller: '+371 2744 8821',
+      origin: 'LV (Mobilais)',
+      lang: 'Latviešu',
     },
-    transcript: `<div class="text-msg">Reminder: Your parcel delivery was <span class="flag">attempted today</span>. A £2.99 re-delivery fee is due to release your package. Pay at: https://delivery-track.uk/pay-now — ref: GB8823</div>`,
+    transcript: `<div class="text-msg">Atgādinājums: Jūsu sūtījums <span class="flag">netika piegādāts šodien</span>. Lai atbrīvotu pakotni, nepieciešams samaksāt €1,99 piegādes maksu: https://omniva-track.lv/maks — ref: LV7734</div>`,
     indicators: [
-      { rank: 'yellow', label: 'Micro-payment request via SMS', detail: 'Small fee requests via SMS link are a common delivery scam vector, though legitimate services do use similar patterns.' },
-      { rank: 'yellow', label: 'Unbranded link domain', detail: 'Link domain is generic and not tied to a known carrier brand.' },
-      { rank: 'yellow', label: 'Minimal sender identification', detail: 'No carrier name or tracking number associated with a major logistics provider.' },
+      { rank: 'yellow', label: 'Mikromaksājuma pieprasījums SMS', detail: 'Nelielas maksas pieprasījumi pa SMS ir izplatīts piegādes krāpniecības veids, lai arī likumīgi pakalpojumi izmanto līdzīgus paziņojumus.' },
+      { rank: 'yellow', label: 'Nesaistīts saites domēns', detail: 'Domēns "omniva-track.lv" nav saistīts ar zināmu kurjerdienesta zīmolu Latvijā.' },
+      { rank: 'yellow', label: 'Minimāla sūtītāja identifikācija', detail: 'Nav norādīts kurjerdienesta nosaukums vai izsekošanas numurs no lielā loģistikas uzņēmuma.' },
     ],
-    transcriptRaw: 'Reminder: Your parcel delivery was attempted today. A £2.99 re-delivery fee is due to release your package. Pay at: https://delivery-track.uk/pay-now — ref: GB8823'
+    transcriptRaw: 'Atgādinājums: Jūsu sūtījums netika piegādāts šodien. Lai atbrīvotu pakotni, nepieciešams samaksāt €1,99 piegādes maksu: https://omniva-track.lv/maks — ref: LV7734'
   },
   {
-    // Case T3: Likely not scam
-    score: 18,
+    // T3: Likely not scam — dental appointment reminder
+    score: 14,
     risk: 'green',
-    riskLabel: 'Likely not scam',
-    summary: 'No significant scam indicators detected.',
-    note: 'Message is consistent with standard appointment reminder format.',
+    riskLabel: 'Visticamāk nav krāpniecība',
+    summary: 'Nav nozīmīgu krāpniecības indikatoru.',
+    note: 'Ziņojums atbilst standarta vizītes atgādinājuma formātam.',
     meta: {
       type: 'SMS',
-      duration: '96 chars',
-      caller: 'DENTCARE',
-      origin: 'UK (Shortcode)',
-      lang: 'English',
+      duration: '104 rakstzīmes',
+      caller: 'VESELIBA',
+      origin: 'LV (Īssavilkums)',
+      lang: 'Latviešu',
     },
-    transcript: `<div class="text-msg">DentCare Clinic: Reminder for your appointment on Tue 14 May at 10:30am. Reply YES to confirm or call 0207 123 4567. Do not reply with personal or payment details.</div>`,
+    transcript: `<div class="text-msg">Veselības Centrs 4: Atgādinājums par Jūsu vizīti otrdien, 14. maijā plkst. 10:30. Apstipriniet ar JĀ vai zvaniet uz 67 201 007. Neatbildiet ar personas datiem vai maksājuma informāciju.</div>`,
     indicators: [
-      { rank: 'yellow', label: 'Alphanumeric sender ID', detail: 'Sender ID "DENTCARE" is a registered shortcode format. Low risk.' },
+      { rank: 'yellow', label: 'Burtciparu sūtītāja ID', detail: 'Sūtītāja ID "VESELIBA" ir reģistrēts īssavilkuma formāts. Zems risks.' },
     ],
-    transcriptRaw: 'DentCare Clinic: Reminder for your appointment on Tue 14 May at 10:30am. Reply YES to confirm or call 0207 123 4567. Do not reply with personal or payment details.'
+    transcriptRaw: 'Veselības Centrs 4: Atgādinājums par Jūsu vizīti otrdien, 14. maijā plkst. 10:30. Apstipriniet ar JĀ vai zvaniet uz 67 201 007. Neatbildiet ar personas datiem vai maksājuma informāciju.'
   }
 ];
 
-// VOICE CASES: 3 distinct cases (scam / unsure / not scam)
+// VOICE CASES: 3 cases (scam / unsure / not scam)
 const voiceCases = [
   {
-    // Case V1: Likely scam
-    score: 88,
+    // V1: Likely scam — VID (State Revenue Service) impersonation
+    score: 91,
     risk: 'red',
-    riskLabel: 'Likely scam',
-    summary: 'High-risk voice pattern. Authoritative impersonation with financial coercion.',
-    note: 'Caller claims to be HMRC. Speech tempo and script are consistent with known fraud patterns.',
+    riskLabel: 'Visticamāk krāpniecība',
+    summary: 'Augsts riska līmenis. Varas iestādes uzdošanās ar finansiālu piespiedu taktisku.',
+    note: 'Zvanītājs uzdodas par VID. Runas temps un skripts atbilst zināmiem krāpniecības paraugiem.',
     meta: {
-      type: 'Voice call',
-      duration: '2m 14s',
-      caller: '+44 20 3876 5541',
-      origin: 'UK (VOIP)',
-      lang: 'English',
+      type: 'Balss zvans',
+      duration: '2m 31s',
+      caller: '+371 6700 1182',
+      origin: 'LV (VoIP)',
+      lang: 'Latviešu',
     },
     transcript: `
       <div class="msg scammer">
         <div class="msg-avatar">S</div>
         <div>
-          <div class="msg-role">Caller (suspected scammer)</div>
-          <div class="msg-bubble">This is HMRC enforcement. <span class="flag">You have an outstanding tax liability</span> of £1,847 from the 2022 to 2023 financial year. <span class="flag">A warrant has been issued for your arrest</span> and will be executed unless full payment is made today. Press 1 now to speak with a case officer.</div>
+          <div class="msg-role">Zvanītājs (iespējams, krāpnieks)</div>
+          <div class="msg-bubble">Labdien, šis ir Valsts ieņēmumu dienests. <span class="flag">Jums ir nodokļu parāds</span> €2,340 apmērā par 2022.–2023. gada periodu. <span class="flag">Ir izdots izpildes rīkojums</span> un tas tiks nodots tiesu izpildītājam, ja maksājums netiks veikts šodien. Nospiediet 1, lai runātu ar inspektoru.</div>
         </div>
       </div>
       <div class="msg victim">
         <div class="msg-avatar">V</div>
         <div>
-          <div class="msg-role">Recipient</div>
-          <div class="msg-bubble">I don\u2019t understand — I haven\u2019t received any letters about this. Are you sure you have the right person?</div>
+          <div class="msg-role">Saņēmējs</div>
+          <div class="msg-bubble">Es nesaprotu — es neesmu saņēmis nekādas vēstules par šo...</div>
         </div>
       </div>
       <div class="msg scammer">
         <div class="msg-avatar">S</div>
         <div>
-          <div class="msg-role">Caller (suspected scammer)</div>
-          <div class="msg-bubble"><span class="flag">This is your final notice.</span> Three letters have been sent to your registered address. Failure to respond has escalated this to a criminal matter. <span class="flag">You must not hang up</span> or the warrant will be activated immediately. Do you have a debit card available?</div>
+          <div class="msg-role">Zvanītājs (iespējams, krāpnieks)</div>
+          <div class="msg-bubble"><span class="flag">Šis ir pēdējais brīdinājums.</span> Trīs paziņojumi ir nosūtīti uz Jūsu reģistrēto adresi. Nereaģēšana ir eskalējusi šo lietu uz krimināllietas līmeni. <span class="flag">Jums nav atļauts beigt sarunu</span>, pretējā gadījumā rīkojums tiks aktivizēts. Vai Jums ir pieejama debetkartes?</div>
         </div>
       </div>
       <div class="msg victim">
         <div class="msg-avatar">V</div>
         <div>
-          <div class="msg-role">Recipient</div>
-          <div class="msg-bubble">I — yes, I have a card but I\u2019d like to call HMRC back directly first to verify this.</div>
+          <div class="msg-role">Saņēmējs</div>
+          <div class="msg-bubble">Man ir karte, bet es vēlētos vispirms piezvanīt VID tieši, lai pārbaudītu.</div>
         </div>
       </div>
       <div class="msg scammer">
         <div class="msg-avatar">S</div>
         <div>
-          <div class="msg-role">Caller (suspected scammer)</div>
-          <div class="msg-bubble"><span class="flag">You cannot call back. This line is the only active channel for your case.</span> If you hang up, our system will flag the warrant as unresolved and officers will be dispatched within the hour. <span class="flag">Give me your card number</span> and we can settle this now and cancel the warrant.</div>
+          <div class="msg-role">Zvanītājs (iespējams, krāpnieks)</div>
+          <div class="msg-bubble"><span class="flag">Jūs nevarat piezvanīt atpakaļ. Šī ir vienīgā aktīvā lietu izskatīšanas līnija.</span> Ja Jūs beigtu sarunu, mūsu sistēma fiksētu neizpildītu rīkojumu un ierēdņi ierastos stundas laikā. <span class="flag">Iedodiet man kartes numuru</span> — mēs varam nokārtot šo tagad.</div>
         </div>
       </div>
       <div class="msg victim">
         <div class="msg-avatar">V</div>
         <div>
-          <div class="msg-role">Recipient</div>
-          <div class="msg-bubble">This doesn\u2019t sound right. I\u2019m going to hang up and contact HMRC myself.</div>
+          <div class="msg-role">Saņēmējs</div>
+          <div class="msg-bubble">Tas nešķiet pareizi. Es beidzu sarunu un sazināšos ar VID pats.</div>
         </div>
       </div>
       <div class="msg scammer">
         <div class="msg-avatar">S</div>
         <div>
-          <div class="msg-role">Caller (suspected scammer)</div>
-          <div class="msg-bubble"><span class="flag">Do not hang up. You are making a serious legal mistake.</span> I am logging your refusal to cooperate. <span class="flag">Arrest proceedings will begin in 30 minutes.</span> This is your last opportunity to resolve this without criminal charges.</div>
+          <div class="msg-role">Zvanītājs (iespējams, krāpnieks)</div>
+          <div class="msg-bubble"><span class="flag">Nebeidziet sarunu. Jūs pieļaujat nopietnu juridisko kļūdu.</span> Es reģistrēju Jūsu atteikumu sadarboties. <span class="flag">Tiesu izpildītāji ieradīsies 30 minūšu laikā.</span> Šī ir Jūsu pēdējā iespēja nokārtot šo bez kriminālapsūdzībām.</div>
         </div>
       </div>
     `,
     indicators: [
-      { rank: 'red', label: 'Arrest threat from government impersonator', detail: 'HMRC never threatens arrest via phone. This is a defined high-confidence fraud pattern.' },
-      { rank: 'red', label: 'Instruction not to hang up', detail: 'Isolation tactic used to maintain control over the victim during the call.' },
-      { rank: 'red', label: 'Immediate payment demand', detail: 'Requesting card details during the call is a major red flag.' },
-      { rank: 'yellow', label: 'VOIP origin masked as UK number', detail: 'Caller ID spoofed as a London geographic number.' },
+      { rank: 'red', label: 'Drauds no valdības iestādes uzdotāja', detail: 'VID nekad nedraud ar tūlītēju aizturēšanu pa tālruni. Tas ir augsti ticams krāpniecības veids.' },
+      { rank: 'red', label: 'Aizliegums beigt sarunu', detail: 'Izolācijas taktika, ko izmanto, lai kontrolētu upuri zvana laikā.' },
+      { rank: 'red', label: 'Tūlītējs maksājuma pieprasījums', detail: 'Kartes datu pieprasīšana zvana laikā ir galvenais sarkanais karogs.' },
+      { rank: 'yellow', label: 'VoIP izcelsme maskēta kā Latvijas numurs', detail: 'Zvanītāja ID ir nomaskēts kā Rīgas ģeogrāfiskais numurs.' },
     ],
-    transcriptRaw: 'Scammer: This is HMRC enforcement. You have an outstanding tax liability of \u00a31,847 from the 2022 to 2023 financial year. A warrant has been issued for your arrest and will be executed unless full payment is made today. Press 1 now to speak with a case officer.\nRecipient: I don\u2019t understand — I haven\u2019t received any letters about this. Are you sure you have the right person?\nScammer: This is your final notice. Three letters have been sent to your registered address. Failure to respond has escalated this to a criminal matter. You must not hang up or the warrant will be activated immediately. Do you have a debit card available?\nRecipient: I — yes, I have a card but I\u2019d like to call HMRC back directly first to verify this.\nScammer: You cannot call back. This line is the only active channel for your case. If you hang up, our system will flag the warrant as unresolved and officers will be dispatched within the hour. Give me your card number and we can settle this now and cancel the warrant.\nRecipient: This doesn\u2019t sound right. I\u2019m going to hang up and contact HMRC myself.\nScammer: Do not hang up. You are making a serious legal mistake. I am logging your refusal to cooperate. Arrest proceedings will begin in 30 minutes. This is your last opportunity to resolve this without criminal charges.'
+    transcriptRaw: 'Zvanītājs: Labdien, šis ir Valsts ieņēmumu dienests. Jums ir nodokļu parāds €2,340 apmērā par 2022.–2023. gada periodu. Ir izdots izpildes rīkojums un tas tiks nodots tiesu izpildītājam, ja maksājums netiks veikts šodien. Nospiediet 1, lai runātu ar inspektoru.\nSaņēmējs: Es nesaprotu — es neesmu saņēmis nekādas vēstules par šo...\nZvanītājs: Šis ir pēdējais brīdinājums. Trīs paziņojumi ir nosūtīti uz Jūsu reģistrēto adresi. Nereaģēšana ir eskalējusi šo lietu uz krimināllietas līmeni. Jums nav atļauts beigt sarunu, pretējā gadījumā rīkojums tiks aktivizēts. Vai Jums ir pieejama debetkartes?\nSaņēmējs: Man ir karte, bet es vēlētos vispirms piezvanīt VID tieši, lai pārbaudītu.\nZvanītājs: Jūs nevarat piezvanīt atpakaļ. Šī ir vienīgā aktīvā lietu izskatīšanas līnija. Ja Jūs beigtu sarunu, mūsu sistēma fiksētu neizpildītu rīkojumu un ierēdņi ierastos stundas laikā. Iedodiet man kartes numuru — mēs varam nokārtot šo tagad.\nSaņēmējs: Tas nešķiet pareizi. Es beidzu sarunu un sazināšos ar VID pats.\nZvanītājs: Nebeidziet sarunu. Jūs pieļaujat nopietnu juridisko kļūdu. Es reģistrēju Jūsu atteikumu sadarboties. Tiesu izpildītāji ieradīsies 30 minūšu laikā. Šī ir Jūsu pēdējā iespēja nokārtot šo bez kriminālapsūdzībām.'
   },
   {
-    // Case V2: Not sure
-    score: 44,
+    // V2: Not sure — tech support OTP harvesting
+    score: 47,
     risk: 'yellow',
-    riskLabel: 'Not sure',
-    summary: 'Mixed signals. Could be legitimate outreach or soft social engineering.',
-    note: 'Caller collects personal confirmation but does not request payment. Verify independently.',
+    riskLabel: 'Neskaidrs',
+    summary: 'Jaukti signāli. Var būt likumīga vai sociālā inženierija.',
+    note: 'Zvanītājs vāc personas apstiprinājumu, bet neprasa maksājumu. Pārbaudīt neatkarīgi.',
     meta: {
-      type: 'Voice call',
-      duration: '1m 05s',
-      caller: '+1 (844) 200-1189',
-      origin: 'US (Toll-free)',
-      lang: 'English',
+      type: 'Balss zvans',
+      duration: '1m 18s',
+      caller: '+371 6722 0044',
+      origin: 'LV (VoIP)',
+      lang: 'Latviešu',
     },
     transcript: `
       <div class="msg scammer">
         <div class="msg-avatar">S</div>
         <div>
-          <div class="msg-role">Caller</div>
-          <div class="msg-bubble">Hi there, I\u2019m calling from <span class="flag">Microsoft Support</span>. My name is Daniel. We\u2019ve flagged some unusual login attempts on a Microsoft account linked to your email address over the past 48 hours. Is this a good time to talk?</div>
+          <div class="msg-role">Zvanītājs</div>
+          <div class="msg-bubble">Labdien, es zvanu no <span class="flag">Tele2 Latvija tehniskā atbalsta</span>. Mēs esam pamanījuši neparastas pieteikšanās darbības Jūsu kontā pēdējo 24 stundu laikā no nezināmas atrašanās vietas. Vai Jums ir brīvs brīdis?</div>
         </div>
       </div>
       <div class="msg victim">
         <div class="msg-avatar">V</div>
         <div>
-          <div class="msg-role">Recipient</div>
-          <div class="msg-bubble">Um, I suppose. What kind of login attempts?</div>
+          <div class="msg-role">Saņēmējs</div>
+          <div class="msg-bubble">Jā, labi. No kādas atrašanās vietas?</div>
         </div>
       </div>
       <div class="msg scammer">
         <div class="msg-avatar">S</div>
         <div>
-          <div class="msg-role">Caller</div>
-          <div class="msg-bubble">We\u2019re seeing access attempts from locations in Eastern Europe and Southeast Asia. To secure the account before any data is compromised, I need to verify your identity first. Can you confirm the primary email address on the account?</div>
+          <div class="msg-role">Zvanītājs</div>
+          <div class="msg-bubble">Pieteikšanās mēģinājumi tika konstatēti no Lietuvas un Polijas. Lai nodrošinātu Jūsu kontu, man jāpārbauda Jūsu identitāte. Vai Jūs varat apstiprināt e-pasta adresi, kas saistīta ar Jūsu Tele2 kontu?</div>
         </div>
       </div>
       <div class="msg victim">
         <div class="msg-avatar">V</div>
         <div>
-          <div class="msg-role">Recipient</div>
-          <div class="msg-bubble">It\u2019s j.harris at gmail, I think. Or maybe the Outlook one — j.harris77 at outlook.</div>
+          <div class="msg-role">Saņēmējs</div>
+          <div class="msg-bubble">Tā ir j.ozols@inbox.lv, domāju.</div>
         </div>
       </div>
       <div class="msg scammer">
         <div class="msg-avatar">S</div>
         <div>
-          <div class="msg-role">Caller</div>
-          <div class="msg-bubble">Thank you, that matches what we have. I\u2019m going to send a <span class="flag">two-factor verification code</span> to that address right now to confirm it\u2019s you. It should arrive within 30 seconds. Once you receive it, <span class="flag">please read the six-digit code back to me</span> so I can complete the verification on our end.</div>
+          <div class="msg-role">Zvanītājs</div>
+          <div class="msg-bubble">Paldies, tas sakrīt ar mūsu datiem. Tagad nosūtīšu <span class="flag">divu faktoru verifikācijas kodu</span> uz šo adresi. Kad saņemsiet — <span class="flag">lūdzu, nolasiet man sešciparu kodu</span>, lai es varētu pabeigt verifikāciju mūsu sistēmā.</div>
         </div>
       </div>
       <div class="msg victim">
         <div class="msg-avatar">V</div>
         <div>
-          <div class="msg-role">Recipient</div>
-          <div class="msg-bubble">Okay\u2026 I just got something. It says \u201cDo not share this code with anyone.\u201d Should I still read it to you?</div>
+          <div class="msg-role">Saņēmējs</div>
+          <div class="msg-bubble">Labi... Es tikko saņēmu kaut ko. Tur raksta "Nekopīgojiet šo kodu ar citiem." Vai man tomēr jums to jāsaka?</div>
         </div>
       </div>
       <div class="msg scammer">
         <div class="msg-avatar">S</div>
         <div>
-          <div class="msg-role">Caller</div>
-          <div class="msg-bubble"><span class="flag">That message is a standard disclaimer</span> and does not apply when you\u2019re speaking directly with Microsoft Support. We need the code to complete the identity verification on our system. <span class="flag">Please go ahead and read it now</span> — this call is being recorded for your protection.</div>
+          <div class="msg-role">Zvanītājs</div>
+          <div class="msg-bubble"><span class="flag">Šis ir standarta atrunas teksts</span> un neattiecas, kad Jūs runājat tieši ar Tele2 atbalstu. Mums nepieciešams kods, lai pabeigtu identitātes verifikāciju. <span class="flag">Lūdzu, nolasiet to tagad</span> — šis zvans tiek ierakstīts Jūsu aizsardzībai.</div>
         </div>
       </div>
     `,
     indicators: [
-      { rank: 'red', label: 'OTP harvesting attempt', detail: 'Asking the user to read back a received code is used to take over accounts.' },
-      { rank: 'yellow', label: 'Unsolicited Microsoft impersonation', detail: 'Microsoft does not proactively call customers about login attempts.' },
-      { rank: 'yellow', label: 'Toll-free number — unverifiable', detail: 'Toll-free numbers are frequently used in support scams due to low traceability.' },
+      { rank: 'red', label: 'OTP iegūšanas mēģinājums', detail: 'Pieprasījums nolasīt saņemto kodu tiek izmantots kontu pārņemšanai.' },
+      { rank: 'yellow', label: 'Nevēlama telekomunikāciju uzņēmuma uzdošanās', detail: 'Tele2 Latvija nezvana klientiem proaktīvi par pieteikšanās mēģinājumiem.' },
+      { rank: 'yellow', label: 'VoIP izcelsme — nepārbaudāms', detail: 'VoIP numuri bieži tiek izmantoti atbalsta krāpniecībā zemas izsekojamības dēļ.' },
     ],
-    transcriptRaw: 'Caller: Hi there, I\u2019m calling from Microsoft Support. My name is Daniel. We\u2019ve flagged some unusual login attempts on a Microsoft account linked to your email address over the past 48 hours. Is this a good time to talk?\nRecipient: Um, I suppose. What kind of login attempts?\nCaller: We\u2019re seeing access attempts from locations in Eastern Europe and Southeast Asia. To secure the account before any data is compromised, I need to verify your identity first. Can you confirm the primary email address on the account?\nRecipient: It\u2019s j.harris at gmail, I think. Or maybe the Outlook one — j.harris77 at outlook.\nCaller: Thank you, that matches what we have. I\u2019m going to send a two-factor verification code to that address right now to confirm it\u2019s you. It should arrive within 30 seconds. Once you receive it, please read the six-digit code back to me so I can complete the verification on our end.\nRecipient: Okay\u2026 I just got something. It says "Do not share this code with anyone." Should I still read it to you?\nCaller: That message is a standard disclaimer and does not apply when you\u2019re speaking directly with Microsoft Support. We need the code to complete the identity verification on our system. Please go ahead and read it now — this call is being recorded for your protection.'
+    transcriptRaw: 'Zvanītājs: Labdien, es zvanu no Tele2 Latvija tehniskā atbalsta. Mēs esam pamanījuši neparastas pieteikšanās darbības Jūsu kontā pēdējo 24 stundu laikā no nezināmas atrašanās vietas. Vai Jums ir brīvs brīdis?\nSaņēmējs: Jā, labi. No kādas atrašanās vietas?\nZvanītājs: Pieteikšanās mēģinājumi tika konstatēti no Lietuvas un Polijas. Lai nodrošinātu Jūsu kontu, man jāpārbauda Jūsu identitāte. Vai Jūs varat apstiprināt e-pasta adresi, kas saistīta ar Jūsu Tele2 kontu?\nSaņēmējs: Tā ir j.ozols@inbox.lv, domāju.\nZvanītājs: Paldies, tas sakrīt ar mūsu datiem. Tagad nosūtīšu divu faktoru verifikācijas kodu uz šo adresi. Kad saņemsiet — lūdzu, nolasiet man sešciparu kodu, lai es varētu pabeigt verifikāciju mūsu sistēmā.\nSaņēmējs: Labi... Es tikko saņēmu kaut ko. Tur raksta "Nekopīgojiet šo kodu ar citiem." Vai man tomēr jums to jāsaka?\nZvanītājs: Šis ir standarta atrunas teksts un neattiecas, kad Jūs runājat tieši ar Tele2 atbalstu. Mums nepieciešams kods, lai pabeigtu identitātes verifikāciju. Lūdzu, nolasiet to tagad — šis zvans tiek ierakstīts Jūsu aizsardzībai.'
   },
   {
-    // Case V3: Likely not scam
-    score: 12,
+    // V3: Likely not scam — SEB bank legitimate callback
+    score: 11,
     risk: 'green',
-    riskLabel: 'Likely not scam',
-    summary: 'Consistent with standard customer service callback pattern.',
-    note: 'No financial requests, no urgency language, caller confirms reference number from prior contact.',
+    riskLabel: 'Visticamāk nav krāpniecība',
+    summary: 'Atbilst standarta klientu apkalpošanas atzvana modelim.',
+    note: 'Nav finansiālu pieprasījumu, nav steidzamības valodas, aģents apstiprina iepriekšējo kontakta atsauci.',
     meta: {
-      type: 'Voice call',
-      duration: '3m 48s',
-      caller: '+44 800 0969 189',
-      origin: 'UK (Freephone)',
-      lang: 'English',
+      type: 'Balss zvans',
+      duration: '4m 02s',
+      caller: '+371 6700 0444',
+      origin: 'LV (Fiksētais)',
+      lang: 'Latviešu',
     },
     transcript: `
       <div class="msg scammer">
         <div class="msg-avatar">S</div>
         <div>
-          <div class="msg-role">Caller (agent)</div>
-          <div class="msg-bubble">Good afternoon, this is Sarah calling from NatWest customer services. I\u2019m calling back regarding your query from yesterday — reference CX-48821. Is now a convenient time to talk?</div>
+          <div class="msg-role">Zvanītājs (aģents)</div>
+          <div class="msg-bubble">Labdien, šī ir Ieva no SEB bankas klientu atbalsta. Es zvanu sakarā ar Jūsu vakardienas pieprasījumu — atsauce KL-29314. Vai Jums tagad ir ērti runāt?</div>
         </div>
       </div>
       <div class="msg victim">
         <div class="msg-avatar">V</div>
         <div>
-          <div class="msg-role">Recipient</div>
-          <div class="msg-bubble">Yes, that\u2019s right. I called about changing the date of my direct debit for the mortgage.</div>
+          <div class="msg-role">Saņēmējs</div>
+          <div class="msg-bubble">Jā, pareizi. Es jautāju par regulārā maksājuma datuma maiņu.</div>
         </div>
       </div>
       <div class="msg scammer">
         <div class="msg-avatar">S</div>
         <div>
-          <div class="msg-role">Caller (agent)</div>
-          <div class="msg-bubble">Perfect, I have the full details of your request here. Before I make any changes I\u2019ll need to confirm a couple of security details. Could you please give me the last four digits of your sort code?</div>
+          <div class="msg-role">Zvanītājs (aģents)</div>
+          <div class="msg-bubble">Lieliski, man ir visa informācija par Jūsu pieprasījumu. Pirms izmaiņu veikšanas man jāapstiprina daži drošības dati. Vai Jūs varat nosaukt pēdējos četrus Jūsu personas koda ciparus?</div>
         </div>
       </div>
       <div class="msg victim">
         <div class="msg-avatar">V</div>
         <div>
-          <div class="msg-role">Recipient</div>
-          <div class="msg-bubble">Sure, it\u2019s 7-7-4-2.</div>
+          <div class="msg-role">Saņēmējs</div>
+          <div class="msg-bubble">Jā, tie ir 2-1-4-7.</div>
         </div>
       </div>
       <div class="msg scammer">
         <div class="msg-avatar">S</div>
         <div>
-          <div class="msg-role">Caller (agent)</div>
-          <div class="msg-bubble">Thank you, that\u2019s confirmed. So you wanted to move the direct debit from the 3rd to the 28th of each month — is that correct? And just to confirm, this is for the mortgage account ending 9014?</div>
+          <div class="msg-role">Zvanītājs (aģents)</div>
+          <div class="msg-bubble">Paldies, apstiprināts. Tātad Jūs vēlaties mainīt maksājuma datumu no 5. uz 25. katru mēnesi — vai tas ir pareizi? Un tas attiecas uz hipotēkas kontu, kas beidzas ar 7203?</div>
         </div>
       </div>
       <div class="msg victim">
         <div class="msg-avatar">V</div>
         <div>
-          <div class="msg-role">Recipient</div>
-          <div class="msg-bubble">Yes, exactly. The 28th works better with my pay date.</div>
+          <div class="msg-role">Saņēmējs</div>
+          <div class="msg-bubble">Jā, precīzi. 25. datums labāk sakrīt ar manas algas datumu.</div>
         </div>
       </div>
       <div class="msg scammer">
         <div class="msg-avatar">S</div>
         <div>
-          <div class="msg-role">Caller (agent)</div>
-          <div class="msg-bubble">All done — the change has been applied and will take effect from next month\u2019s cycle. You\u2019ll receive a confirmation letter within five working days. Is there anything else I can help you with today?</div>
+          <div class="msg-role">Zvanītājs (aģents)</div>
+          <div class="msg-bubble">Izmaiņas ir veiktas un stāsies spēkā no nākamā mēneša cikla. Apstiprinājuma vēstule tiks nosūtīta piecu darba dienu laikā. Vai es varu Jums vēl kā palīdzēt šodien?</div>
         </div>
       </div>
     `,
     indicators: [
-      { rank: 'yellow', label: 'Partial identity verification request', detail: 'Requesting last 4 digits of sort code is standard bank verification. Context supports legitimacy.' },
+      { rank: 'yellow', label: 'Daļēja identitātes verifikācija', detail: 'Pēdējo četru personas koda ciparu pieprasīšana ir standarta bankas verifikācijas procedūra. Konteksts atbalsta likumību.' },
     ],
-    transcriptRaw: 'Agent: Good afternoon, this is Sarah calling from NatWest customer services. I\u2019m calling back regarding your query from yesterday — reference CX-48821. Is now a convenient time to talk?\nRecipient: Yes, that\u2019s right. I called about changing the date of my direct debit for the mortgage.\nAgent: Perfect, I have the full details of your request here. Before I make any changes I\u2019ll need to confirm a couple of security details. Could you please give me the last four digits of your sort code?\nRecipient: Sure, it\u2019s 7-7-4-2.\nAgent: Thank you, that\u2019s confirmed. So you wanted to move the direct debit from the 3rd to the 28th of each month — is that correct? And just to confirm, this is for the mortgage account ending 9014?\nRecipient: Yes, exactly. The 28th works better with my pay date.\nAgent: All done — the change has been applied and will take effect from next month\u2019s cycle. You\u2019ll receive a confirmation letter within five working days. Is there anything else I can help you with today?'
+    transcriptRaw: 'Aģents: Labdien, šī ir Ieva no SEB bankas klientu atbalsta. Es zvanu sakarā ar Jūsu vakardienas pieprasījumu — atsauce KL-29314. Vai Jums tagad ir ērti runāt?\nSaņēmējs: Jā, pareizi. Es jautāju par regulārā maksājuma datuma maiņu.\nAģents: Lieliski, man ir visa informācija par Jūsu pieprasījumu. Pirms izmaiņu veikšanas man jāapstiprina daži drošības dati. Vai Jūs varat nosaukt pēdējos četrus Jūsu personas koda ciparus?\nSaņēmējs: Jā, tie ir 2-1-4-7.\nAģents: Paldies, apstiprināts. Tātad Jūs vēlaties mainīt maksājuma datumu no 5. uz 25. katru mēnesi — vai tas ir pareizi? Un tas attiecas uz hipotēkas kontu, kas beidzas ar 7203?\nSaņēmējs: Jā, precīzi. 25. datums labāk sakrīt ar manas algas datumu.\nAģents: Izmaiņas ir veiktas un stāsies spēkā no nākamā mēneša cikla. Apstiprinājuma vēstule tiks nosūtīta piecu darba dienu laikā. Vai es varu Jums vēl kā palīdzēt šodien?'
   }
 ];
 
 // ─── State ────────────────────────────────────────────────────────────────────
-let textIndex = 0;   // next text case to show
-let voiceIndex = 0;  // next voice case to show
+let textIndex = 0;
+let voiceIndex = 0;
 let isAnalyzing = false;
 let currentTranscriptRaw = '';
 
@@ -1263,7 +727,6 @@ function resetSteps() {
 }
 
 function setStep(n, state) {
-  // state: 'active' | 'done'
   document.getElementById('step' + n + 'Icon').className = 'step-icon ' + state;
   document.getElementById('step' + n + 'Label').className = 'step-label ' + state;
 }
@@ -1273,7 +736,6 @@ function addSample(type) {
   if (isAnalyzing) return;
   isAnalyzing = true;
 
-  // Pick case
   let caseData;
   if (type === 'text') {
     caseData = textCases[textIndex];
@@ -1283,7 +745,6 @@ function addSample(type) {
     voiceIndex = (voiceIndex + 1) % voiceCases.length;
   }
 
-  // Hide result, hide awaiting, show loading
   document.getElementById('resultArea').classList.remove('visible');
   document.getElementById('awaitingArea').style.display = 'none';
   document.getElementById('loadingArea').classList.add('visible');
@@ -1291,21 +752,16 @@ function addSample(type) {
   document.getElementById('btnVoice').disabled = true;
   document.getElementById('copySuccess').classList.remove('show');
 
-  // Reset steps
   resetSteps();
   setStep(1, 'active');
 
-  // Reset loading steps
   for (let i = 1; i <= 5; i++) {
-    const el = document.getElementById('ls' + i);
-    el.className = 'loading-step';
+    document.getElementById('ls' + i).className = 'loading-step';
   }
   document.getElementById('progressFill').style.width = '0%';
   document.getElementById('loadingPct').textContent = '0%';
-  document.getElementById('loadingLabel').textContent = type === 'text' ? 'Analysing text message…' : 'Analysing voice message…';
+  document.getElementById('loadingLabel').textContent = type === 'text' ? 'Analizē teksta ziņojumu…' : 'Analizē balss ziņojumu…';
 
-  // Simulate 5-second analysis with timed steps
-  // Steps: ls1 at 0s, ls2 at 1s, ls3 at 2s, ls4 at 3s, ls5 at 4s, done at 5s
   const stepTimings = [
     { ls: 1, flow: 2, pct: 20, delay: 200 },
     { ls: 2, flow: 3, pct: 40, delay: 1200 },
@@ -1314,9 +770,8 @@ function addSample(type) {
     { ls: 5, flow: 6, pct: 95, delay: 4400 },
   ];
 
-  stepTimings.forEach(({ ls, flow, pct, delay }, idx) => {
+  stepTimings.forEach(({ ls, flow, pct, delay }) => {
     setTimeout(() => {
-      // Mark previous done
       if (ls > 1) {
         document.getElementById('ls' + (ls - 1)).className = 'loading-step done';
         setStep(flow - 1, 'done');
@@ -1328,7 +783,6 @@ function addSample(type) {
     }, delay);
   });
 
-  // Final: show result
   setTimeout(() => {
     document.getElementById('ls5').className = 'loading-step done';
     setStep(6, 'done');
@@ -1349,28 +803,23 @@ function addSample(type) {
 function showResult(data, type) {
   currentTranscriptRaw = data.transcriptRaw;
 
-  // Score
   const scoreEl = document.getElementById('scoreNumber');
   scoreEl.textContent = data.score + '%';
   scoreEl.className = 'score-number ' + data.risk;
 
-  // Badge
   const badgeEl = document.getElementById('riskBadge');
   badgeEl.textContent = data.riskLabel;
   badgeEl.className = 'risk-badge ' + data.risk;
 
-  // Summary
   document.getElementById('scoreSummary').textContent = data.summary;
   document.getElementById('scoreNote').textContent = data.note;
 
-  // Case type badge
   const now = new Date();
   const timeStr = now.getHours().toString().padStart(2,'0') + ':' +
                   now.getMinutes().toString().padStart(2,'0') + ':' +
                   now.getSeconds().toString().padStart(2,'0');
-  document.getElementById('caseTypeBadge').textContent = type === 'text' ? 'Text message' : 'Voice message';
+  document.getElementById('caseTypeBadge').textContent = type === 'text' ? 'Teksta ziņojums' : 'Balss ziņojums';
 
-  // Meta
   document.getElementById('metaType').textContent = data.meta.type;
   document.getElementById('metaDuration').textContent = data.meta.duration;
   document.getElementById('metaCaller').textContent = data.meta.caller;
@@ -1378,14 +827,11 @@ function showResult(data, type) {
   document.getElementById('metaLang').textContent = data.meta.lang;
   document.getElementById('metaTime').textContent = timeStr;
 
-  // Transcript label
   document.getElementById('transcriptLabel').textContent =
-    type === 'text' ? 'Message content' : 'Call transcript';
+    type === 'text' ? 'Ziņojuma saturs' : 'Zvana transkripts';
 
-  // Transcript body
   document.getElementById('transcriptBody').innerHTML = data.transcript;
 
-  // Indicators
   const indList = document.getElementById('indicatorsList');
   indList.innerHTML = '';
   data.indicators.forEach((ind, i) => {
@@ -1401,7 +847,6 @@ function showResult(data, type) {
     indList.appendChild(div);
   });
 
-  // Show
   const resultArea = document.getElementById('resultArea');
   resultArea.classList.add('visible', 'fade-in');
   resultArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1417,23 +862,18 @@ function copyTranscript() {
     setTimeout(() => el.classList.remove('show'), 2500);
   }
 
-  // Format the raw transcript into the requested labeled format
   const lines = currentTranscriptRaw.split('\n');
   const formatted = lines.map(line => {
-    if (line.startsWith('Scammer:') || line.startsWith('Caller:') || line.startsWith('Agent:')) {
-      return '[Unknown Number]\n' + line.replace(/^(Scammer|Caller|Agent):\s*/, '');
-    } else if (line.startsWith('Recipient:')) {
-      return '[Recipient]\n' + line.replace(/^Recipient:\s*/, '');
+    if (line.startsWith('Zvanītājs:') || line.startsWith('Aģents:')) {
+      return '[Nezināms numurs]\n' + line.replace(/^(Zvanītājs|Aģents):\s*/, '');
+    } else if (line.startsWith('Saņēmējs:')) {
+      return '[Saņēmējs]\n' + line.replace(/^Saņēmējs:\s*/, '');
     }
-    // Plain text lines (SMS cases — single message, no role prefix)
-    return '[Unknown Number]\n' + line;
+    return '[Nezināms numurs]\n' + line;
   }).join('\n\n');
 
-  // Try modern clipboard API first, fall back to execCommand
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(formatted).then(showSuccess).catch(() => {
-      execCommandCopy(formatted, showSuccess);
-    });
+    navigator.clipboard.writeText(formatted).then(showSuccess).catch(() => execCommandCopy(formatted, showSuccess));
   } else {
     execCommandCopy(formatted, showSuccess);
   }
@@ -1446,12 +886,7 @@ function execCommandCopy(text, callback) {
   document.body.appendChild(ta);
   ta.focus();
   ta.select();
-  try {
-    document.execCommand('copy');
-    callback();
-  } catch (e) {
-    console.warn('Copy failed:', e);
-  }
+  try { document.execCommand('copy'); callback(); } catch(e) { console.warn('Copy failed:', e); }
   document.body.removeChild(ta);
 }
 
